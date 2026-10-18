@@ -42,7 +42,7 @@ Git（如果没用过GitHub，是新号建议开几个仓库刷一下Action）
 - 7. TF2（坐标变换系统）
 - 8. rosbag2（数据录制与回放）
 3.2 Linux
-学习网址 https://labex.io/LinuxJourney?utm_source
+学习网址 https://labex.io/LinuxJourney
 `pwd`、`ls`、`cd`、`find`、`grep`、`tail`、`ps`、`source`、`git`、`cmake`
 3.3 视觉（Yolo11（最稳定），Yolo26(最新，不做强制要求看个人兴趣)）
 怎么用
