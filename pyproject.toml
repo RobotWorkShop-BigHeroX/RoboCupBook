@@ -1,0 +1,23 @@
+[project]
+name = "robocup-hsl-book"
+version = "1.0.0"
+description = "RoboCup 人形机器人足球联赛 (HSL) 极简入门手册与知识图谱 - 湖南大学 Robot 工作坊 BigHeroX 战队"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "hongli", email = "2868014836@qq.com" }
+]
+contributors = [
+    { name = "hanxu chen" }
+]
+keywords = ["robocup", "humanoid-soccer-league", "hsl", "ros2", "robotics", "t4", "zvalley"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/RobotWorkShop-BigHeroX/RoboCupBook"
+Repository = "https://github.com/RobotWorkShop-BigHeroX/RoboCupBook"
+Documentation = "https://github.com/RobotWorkShop-BigHeroX/RoboCupBook/tree/master/docs"
+
+[tool.uv]
+package = false

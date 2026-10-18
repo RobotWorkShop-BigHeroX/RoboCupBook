@@ -61,6 +61,21 @@ $RECYCLE.BIN/
 *.swo
 
 # ==========================================
+# LaTeX Build Artifacts
+# ==========================================
+*.aux
+*.toc
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.nav
+*.snm
+*.vrb
+latex/*.pdf
+
+
+# ==========================================
 # Programming Environments (Optional)
 # ==========================================
 # Python

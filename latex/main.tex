@@ -1,0 +1,401 @@
+%!TEX program = xelatex
+\documentclass[11pt,a4paper]{ctexart}
+
+% ==========================================
+% 宏包引入与排版配置 (参考 RoboCup HSL Rules.tex 体系)
+% ==========================================
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.8cm, bottom=2.8cm}
+
+\usepackage{times}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+\usepackage[
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    urlcolor=blue!70!black,
+    citecolor=green!50!black,
+    bookmarksnumbered=true,
+    pdfstartview=FitH
+]{hyperref}
+
+% 提示框宏定义 (仿照 Rules.tex hintbox 风格)
+\newtcolorbox{noticebox}[1][]{
+    colback=blue!5!white,
+    colframe=blue!60!black,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=3mm,
+    boxrule=1pt,
+    left=4mm, right=4mm, top=3mm, bottom=3mm,
+    breakable
+}
+
+\newtcolorbox{dangerbox}[1][]{
+    colback=red!5!white,
+    colframe=red!70!black,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=3mm,
+    boxrule=1pt,
+    left=4mm, right=4mm, top=3mm, bottom=3mm,
+    breakable
+}
+
+\newtcolorbox{quotebox}{
+    colback=gray!8!white,
+    colframe=gray!40!white,
+    arc=2mm,
+    boxrule=0.5pt,
+    left=4mm, right=4mm, top=2.5mm, bottom=2.5mm,
+    breakable
+}
+
+% ==========================================
+% 页眉与页脚定制 (每页标明 Robot工作坊 与 BigHeroX)
+% ==========================================
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textbf{\textcolor{blue!80!black}{Robot工作坊}}}
+\rhead{\textbf{\textcolor{red!80!black}{BigHeroX 战队}}}
+\chead{\textcolor{gray}{\small RoboCup HSL 新人入门手册}}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ==========================================
+% 文档信息元数据
+% ==========================================
+\hypersetup{
+    pdftitle={RoboCup HSL 新人入门手册 - Robot工作坊 BigHeroX},
+    pdfauthor={hongli (2868014836@qq.com)},
+    pdfsubject={RoboCup Humanoid Soccer League Onboarding Handbook},
+    pdfkeywords={RoboCup, HSL, BigHeroX, RobotWorkShop, ROS 2, T4, Zvalley}
+}
+
+\begin{document}
+
+% ==========================================
+% 封面排版 (Cover Page)
+% ==========================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+    
+    % 双 Logo 居中展示
+    \begin{figure}[h]
+        \centering
+        \includegraphics[height=3.0cm]{../public-resource/ima/RobotWorkShop.jpg}
+        \hspace{1.5cm}
+        \includegraphics[height=3.0cm]{../public-resource/ima/BigHeroX.jpg}
+    \end{figure}
+    
+    \vspace{0.8cm}
+    {\Huge \textbf{\textcolor{blue!90!black}{RoboCup 人形机器人足球联赛 (HSL)}}}\\[0.4cm]
+    {\LARGE \textbf{新成员系统入门手册与技术工程图谱}}\\[0.5cm]
+    {\large \textsf{A Comprehensive Onboarding Handbook \& Engineering Roadmap for RoboCup HSL}}
+    
+    \vspace{1.2cm}
+    \rule{0.85\textwidth}{1.2pt}
+    \vspace{1.0cm}
+    
+    \begin{minipage}{0.75\textwidth}
+        \large
+        \textbf{编著者（Author）：} hongli\\[0.3cm]
+        \textbf{贡献者（Contributor）：} hanxu chen\\[0.3cm]
+        \textbf{官方邮箱（Email）：} \href{mailto:2868014836@qq.com}{2868014836@qq.com}\\[0.3cm]
+        \textbf{所属机构与战队：} 湖南大学 Robot 工作坊 · BigHeroX 战队\\[0.3cm]
+        \textbf{开源仓库：} \url{https://github.com/RobotWorkShop-BigHeroX/RoboCupBook}\\[0.3cm]
+        \textbf{手册版本：} \textsf{v1.0.0}\\[0.3cm]
+        \textbf{构建日期：} \today
+    \end{minipage}
+    
+    \vfill
+    
+    \begin{quotebox}
+        \centering
+        \small
+        \textit{“面向对于 RoboCup 及人形机器人足球联赛完全不了解的新成员。\\
+        不求读完所有细枝末节，重在建立清晰技术知识框架、工程严谨思维与实验室安全底线。”}
+    \end{quotebox}
+    
+    \vspace{0.8cm}
+\end{titlepage}
+
+% ==========================================
+% 目录
+% ==========================================
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+% ==========================================
+% 第一章: 赛事与规则
+% ==========================================
+\section{RoboCup 介绍}
+
+\begin{noticebox}[本章导读]
+欢迎加入 RoboCup 人形机器人足球联赛（Humanoid Soccer League, HSL）！本章系统梳理 RoboCup 赛事的终极愿景、近年规则重大调整、比赛基本规程以及核心裁判系统 GameController 的工作原理。
+\end{noticebox}
+
+\subsection{1.1 涵盖有 RoboCup 的历史（尤其是 HSL 在近期的更改线路）}
+RoboCup（机器人世界杯）创立于 1997 年，其著名的科学目标是：\textbf{“到 2050 年中叶，开发一支完全自主的人形机器人足球队，战胜最近一届人类男子足球世界杯冠军队。”}
+
+为了实现这一终极目标，国际执行委员会（EC）与技术委员会（TC）在近期推进了里程碑式的赛制重组：
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{合并标准平台组（SPL）}：历史上采用 NAO 机器人的 SPL 组拥有三十年积淀的视觉特征识别、卡尔曼自定位与多机协作战术。随着商业化双足人形机器人成熟，SPL 组已正式与 HSL 深度合并，其代表性开源架构（如 B-Human）成为 HSL 研发的基石。
+    \item \textbf{取消中型轮式组（MSL）}：轮式底盘虽然速度极快，但在地形通过性与 2050 双足人形愿景上存在本质断层。随着双足动平衡技术的突飞猛进，MSL 正式退出现役。
+    \item \textbf{取消仿真组与周边分支重心收敛}：赛事逐步压缩虚拟仿真组及 @Home 服务组战线，将全球顶尖高校与科研机构的工程算力与实验重心，\textbf{高度聚焦在物理现实中强对抗、高不确定性的人形机器人足球联赛（HSL）}。
+\end{enumerate}
+
+\subsection{1.3 对目前赛事规则简单的介绍}
+HSL 比赛在人工绿茵草皮球场上开展全自主对抗，主要规则要点如下：
+\begin{itemize}[leftmargin=*]
+    \item \textbf{7 人制赛制（7 vs 7）}：当前国际赛场全面过渡为 7 人制标准比赛，对整队的阵型保持、无球跑位和多智能体通信提出了极高要求。
+    \item \textbf{比赛时长}：分上下半场，半场有效比赛时间为 10 至 15 分钟，中场休息 5 至 10 分钟。
+    \item \textbf{换人与离场维修（Pick-up）}：在死球、进球或裁判暂停阶段，经主裁判许可后可由场边助理裁判将故障机器人抱出场外维修，重新入场必须在底线等待满 30 秒罚时并经裁判盒指令下达后方可自主回场。
+    \item \textbf{全自主原则}：比赛进行中严禁任何人通过网络或手柄进行遥控干预，所有决策感知均运行在机载端。
+\end{itemize}
+
+\textbf{规则参考链接}：
+\begin{itemize}
+    \item 中文赛事规则速查：\url{https://hcnwvqtaepc6.feishu.cn/wiki/PHPCwZCI8iPhDhksyzNcBFKRnIh?from=from_copylink}
+    \item 官方 LaTeX 规则仓库：\url{https://github.com/RoboCup-HumanoidSoccerLeague/HSL-Rules}
+\end{itemize}
+
+\subsection{1.4 裁判盒的程序源码}
+\textbf{GameController（简称 GC）}是整个比赛的调度中枢。场边主裁判通过操作 GC 客户端，在本地专用局域网上向所有机器人所在端口广播 UDP 状态数据包。
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{核心状态机}：
+    \begin{enumerate}
+        \item \texttt{INITIAL}：初始停机，等待入场。
+        \item \texttt{READY}：自主走向规定开球阵型点位。
+        \item \texttt{SET}：静止站立就位，进入开球倒计时。
+        \item \texttt{PLAYING}：裁判哨响，全自由对抗进攻与防守。
+        \item \texttt{FINISHED}：半场或全场哨响，切入安全待机。
+    \end{enumerate}
+    \item \textbf{源码仓库}：\url{https://github.com/RoboCup-HumanoidSoccerLeague/GameController}
+    \item \textbf{调试建议}：新队员在本地可启动 GC 模拟裁判广播，配合机载通信驱动验证机器人各模式间的状态机自动跳转。
+\end{itemize}
+
+% ==========================================
+% 第二章: 强队谱系
+% ==========================================
+\newpage
+\section{RoboCup 的历史强队}
+
+\subsection{1.2 全球顶尖战队谱系与核心开源代码库}
+站在巨人的肩膀上是技术突破的捷径。以下归纳了全球人形足球联赛的代表性强队与核心源码资产：
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l p{3.2cm} p{2.2cm} X}
+\toprule
+\textbf{战队名称} & \textbf{所属机构 / 国家} & \textbf{组别与战绩} & \textbf{核心技术特长与源码文档} \\
+\midrule
+\textbf{B-Human} & 德国不来梅大学 / DFKI & 10+ 次世界冠军 & 全球代码标杆；卡尔曼滤波、高效视觉、分层状态机 \newline \url{https://github.com/bhuman/BHumanCodeRelease} \\
+\addlinespace
+\textbf{Rhoban FC} & 法国波尔多大学 & 4 次世界冠军 & 样条曲线步态发生器（IKWalk）、高动态倒地恢复 \newline \url{https://github.com/Rhoban} \\
+\addlinespace
+\textbf{NimbRo} & 德国波恩大学 & 成人组世界霸主 & 3D 打印轻量化人形本体、全身动力学平衡控制 \newline \url{https://github.com/AIS-Bonn/nimbro_robotics} \\
+\addlinespace
+\textbf{CIT Brains} & 日本千叶工业大学 & 资深冠亚军战队 & 高刚度关节运动学解析、快速步态与稳健控球 \\
+\addlinespace
+\textbf{Hephaestus} & 中国清华大学 & 历届全球四强 & 高精位姿估计、模型轻量化部署与多机协同战术 \\
+\addlinespace
+\textbf{Mountain Sea} & 中国农业大学 & 资深竞技战队 & 多传感器信息融合、草皮步态减震补偿算法 \\
+\addlinespace
+\textbf{RoMeLa} & 美国 UCLA & 硬件技术先驱 & 著名开源平台 DARwIn-OP 与 ARTEMIS 本体设计者 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{学习建议}：
+优先精读 B-Human 的每年技术报告（Code Release Report）与架构说明，其 Blackboard 数据流水线与视觉标定方案是现代自主机器人系统工程的典范。
+
+% ==========================================
+% 第三章: 队伍硬件与平台
+% ==========================================
+\newpage
+\section{本队伍介绍的机器人平台和网站平台介绍}
+
+\subsection{2.1 T4 型号机器人的介绍}
+BigHeroX 战队当前以中联重科（Zvalley）T4 型号小人形机器人为核心竞技实体。
+\begin{itemize}[leftmargin=*]
+    \item \textbf{机械与电气特性}：整机高约 60~75 cm，采用轻量化铝合金与碳纤维结构件，腿部具备 6 自由度（DOF）串联机构，搭载高倍率动力锂电回路。
+    \item \textbf{计算平台}：机载集成高算力 GPU 嵌入式工控板，用于跑通端到端视觉检测与 ROS 2 步态控制器。
+    \item \textbf{IMU（惯性测量单元）}：
+    \begin{itemize}
+        \item \textbf{测量数据}：三轴角速度 $\omega$、三轴线性加速度 $a$ 及内置解算的姿态四元数（Roll, Pitch, Yaw）。
+        \item \textbf{核心用途}：实时监测机体俯仰与横滚角度偏差，实现足底接触力矩闭环（ZMP 平衡维持）；当倾角超过阈值时触发紧急防砸地缓冲，并在倒地后识别朝向调用起身轨迹。
+    \end{itemize}
+    \item \textbf{足式里程计（Odometry）}：通过支撑相判别与正运动学（Forward Kinematics）积分推算躯干相对位移。由于打滑存在累积漂移，必须借助视觉标线进行绝对位置重定位。
+    \item \textbf{私有硬件手册说明}：有关 T4 的原理图、引脚接口与底层调试手册属于内部资产，存放在本项目的私有子模块仓库中（\texttt{Zvalley-resource-old/}），仅限授权队员查阅。
+\end{itemize}
+
+\subsection{2.2 网站平台的介绍}
+战队开发了专用的赛事管理与文档协同平台，涵盖比赛录像回放、裁判盒通信日志库与技术培训讲义（内部架构 PPT 同样归档于私有子模块中）。
+
+\subsection{2.3 中联重科 Zvalley 的资源}
+中联重科为仿生机器人提供了丰富的开发者生态支持：
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{开放资料总站}：\url{https://eai.zvalley.com/openSource}
+    \item \textbf{SDK 说明中心}：\url{https://eai.zvalley.com/openSource/detail/2087512650565427200}
+    \item \textbf{SDK GitHub 仓库}：\url{http://github.com/Zvalley-Robotics/zv_robot_sdk}
+    \item \textbf{Z01 机器人仿真资产下载}：\url{https://eai.zvalley.com/openSource/detail/2109932634205204480}（提供 Isaac Sim、MuJoCo 与 URDF 标准模型包）
+    \item \textbf{Zlab\_Gym 开发手册}：\url{https://eai.zvalley.com/openSource/detail/2109922358609195008}（大规模强化学习环境配置指引）
+\end{enumerate}
+
+\subsection{2.4 本队伍的 TDP、Video、Robots、Software}
+本队公开技术资料已完整归档在项目 \texttt{public-resource/} 目录下：
+\begin{itemize}[leftmargin=*]
+    \item \textbf{历年 TDP 论文}：\texttt{BigHeroX\_2025\_TDP.pdf} 与 \texttt{BigHeroX\_2026\_TDP.pdf}。
+    \item \textbf{官方展示视频（Video）}：\url{https://www.youtube.com/watch?v=z3zi2sfMBm4}。
+    \item \textbf{硬件与软件技术规格书}：\texttt{Robots.pdf} 与 \texttt{software.pdf}。
+    \item \textbf{全球参赛队伍汇总}：\url{https://hsl.robocup.org/qualified-teams/}。
+\end{itemize}
+
+% ==========================================
+% 第四章: 学习路线
+% ==========================================
+\newpage
+\section{如何入手学习}
+
+\begin{quotebox}
+\textbf{研学格言：} \\
+\textit{“有些内容不需要详细学习，比如 ROS 2、Linux，了解其思想即可，比如 ROS 2 的 DDS 框架。\\
+禁止完全许愿式编程，但也不必转向一行行了解代码，这就像从一个低效走向另一个低效。\\
+—— andinm\_hong”}
+\end{quotebox}
+
+\subsection{3.0 必学：Git}
+代码版本管理是协同开发的底线技能。熟练运用分支管理模型（Feature Branch）、Commit 规范及 Git Submodule 子模块操作。新队员建议在 GitHub 上搭建简单的 CI/CD 工作流练手。
+
+\subsection{3.1 ROS 2 八大核心特性}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{DDS / RTPS 通信中间件}：无中心化自发现，消除单点故障，保证弱网与异常跌倒重启下的通信鲁棒性。
+    \item \textbf{节点通信模型}：Topic（高频异步单向数据流）、Service（低频同步指令请求）、Action（长耗时可中断带反馈动作）。
+    \item \textbf{QoS（服务质量策略）}：深入理解 Reliability（可靠 vs 尽力而为）、Durability（瞬态本地持久化）与 Liveliness 策略。
+    \item \textbf{Executor 回调调度}：单线程与多线程执行器的区别，高频控制周期的互斥隔离。
+    \item \textbf{Lifecycle Node（生命周期节点）}：通过严格状态机管理节点的初始化、激活与注销。
+    \item \textbf{Node Composition（节点组合）}：容器内共享内存零拷贝传递大型图像数据。
+    \item \textbf{TF2 坐标变换系统}：维护全局地图、里程计、机体基座、相机连杆之间的时空变换树。
+    \item \textbf{rosbag2 数据录制回放}：比赛实车数据记录与实验室离线复现。
+\end{enumerate}
+
+\subsection{3.2 Linux 核心工具链}
+推荐在线教程：\url{https://labex.io/LinuxJourney}。核心掌握：\texttt{pwd}、\texttt{ls}、\texttt{cd}、\texttt{find}、\texttt{grep}、\texttt{tail}、\texttt{ps}、\texttt{source}、\texttt{git}、\texttt{cmake}。
+
+\subsection{3.3 视觉感知（YOLO11 与 YOLO26）}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{版本选型}：首选 \textbf{YOLO11}（工程稳定性最好，嵌入式 TensorRT 加速生态完善）；前沿跟踪 \textbf{YOLO26}（最新架构探究）。
+    \item \textbf{核心应用}：足球快速检测、球门立柱分割与对方队员颜色标签识别。
+\end{itemize}
+
+\subsection{3.4 行为树和状态机（策略组 重点）}
+采用分层状态机处理底层互斥动作，采用现代 \textbf{BehaviorTree.CPP} 行为树实现高层对抗策略。根据是否持球、距离球门远近动态切换“前锋射门”、“插上助攻”与“回防卡位”等角色。
+
+\subsection{3.5 粒子滤波算法（感知组 重点）}
+\begin{noticebox}[规则硬性约束]
+\textbf{官方规则明文禁止使用激光雷达（LiDAR）！} 深度相机在强烈光照与人工草皮反光下存在严重噪点且在检录中属于灰色地带。
+\end{noticebox}
+\textbf{定位核心方案}：将足式里程计与相机视野内检测到的白线交点（L/T型）、中圈圆弧及球门立柱特征，通过\textbf{蒙特卡洛粒子滤波（MCL）}进行概率匹配与权重更新，实时发布 \texttt{map} $\to$ \texttt{odom} 动态 TF，实现厘米级全局自定位。
+
+\subsection{3.6 深度强化学习（进阶选修路线）}
+推荐掌握：Bellman 最优方程、动态规划、TD 时序差分、蒙特卡洛树搜索、Policy Network、Actor-Critic 架构、Q-learning、DDPG，以及当前双足步态训练的主流算法 \textbf{PPO}。
+
+% ==========================================
+% 第五章: 官方渠道
+% ==========================================
+\newpage
+\section{消息渠道}
+
+\subsection{4.1 官方网站与比赛信息}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{HSL 官网}：\url{https://hsl.robocup.org/}
+    \item \textbf{年度赛事入口}：\url{https://202x.robocup.org/}
+    \item \textbf{新参赛队指南}：\url{https://hsl.robocup.org/information-for-new-teams/}
+    \item \textbf{入选队伍资料库}：\url{https://hsl.robocup.org/qualified-teams/}
+\end{itemize}
+
+\subsection{4.2 规则与开源工具仓库}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{HSL 规则仓库}：\url{https://github.com/RoboCup-HumanoidSoccerLeague/HSL-Rules}
+    \item \textbf{GameController 裁判盒}：\url{https://github.com/RoboCup-HumanoidSoccerLeague/GameController}
+    \item \textbf{机器人合规检查工具}：\url{https://github.com/RoboCup-HumanoidSoccerLeague/RobotInspection}
+    \item \textbf{官方机器人支持项目}：\url{https://robotprogram.robocup.org/}
+\end{itemize}
+
+\subsection{4.3 核心实时公告渠道（极为关键，必须加入）}
+\begin{dangerbox}[核心成员强制要求]
+错过官方通告可能直接导致错失报名资格或因规则变动取消成绩！
+\end{dangerbox}
+\begin{enumerate}
+    \item \textbf{官方邮件列表（Mailing List · 必须订阅）}：\newline
+    \url{https://lists.robocup.org/mm/lists/robocup-humanoid.lists.robocup.org/} \newline
+    官方发布规则修订投票、资格评审答疑的唯一法理渠道。
+    \item \textbf{官方 Discord 技术交流群（必须进群）}：\newline
+    \url{https://discord.gg/67qGN8ycwz} \newline
+    全球参赛队队长、主裁判与技术委员会实时沟通社区。
+\end{enumerate}
+
+% ==========================================
+% 第六章: 安全守则
+% ==========================================
+\newpage
+\section{安全守则}
+
+\begin{dangerbox}[实验室最高警示 · 遵守安全规范就是保护生命]
+参赛人形机器人重达数十公斤，通体采用航空铝合金与碳纤维制造。高扭矩电机爆发力巨大，一旦发生失控或剧烈抖动，冲击力足以造成严重机械损坏或人身伤害。必须严格遵守以下守则！
+\end{dangerbox}
+
+\subsection{5.1 吊机安全悬挂规范}
+\begin{enumerate}[leftmargin=*]
+    \item 凡是上电进行动态调试、步态测试或踢球实验，\textbf{机器人必须全程挂在安全吊机保护绳下方}。
+    \item 保护绳调节至留有 5~10 cm 缓冲余量，一旦机器人跌倒失稳能够立即凌空悬挂，严禁让机器人脱离保护自由落地。
+    \item 在行走算法处于使能运转状态下，\textbf{严禁在关节未自锁的情况下将机器人双腿悬空}，悬空暴转极易烧毁电机与驱动板。
+\end{enumerate}
+
+\subsection{5.2 三人协作测试制度}
+实车实验必须保证三人同时在场：
+\begin{itemize}[leftmargin=*]
+    \item \textbf{推吊车安全员（人员 A）}：全程双手推扶吊车，目光紧随机器人重心，随行移动。
+    \item \textbf{遥控操纵手（人员 B）}：手持无线遥控器，拇指常驻在“进阻尼”按键上，高度警惕。
+    \item \textbf{环境监护员（人员 C）}：负责线缆与周边闲杂人员管控，手持动力急停拍钮。
+\end{itemize}
+
+\subsection{5.3 紧急处置与“进阻尼”肌肉记忆}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{第一肌肉记忆}：如果机器人出现异常反折、全身高频剧烈抖动或发散失控，\textbf{立马切进阻尼（Damping Mode）}！不要犹豫！
+    \item 阻尼模式下电机各相短接呈现柔顺阻尼特性，能最大程度保护齿轮箱不受刚性冲击。
+    \item 仅当进阻尼毫无响应或突发火花短路时，方可使用硬件 Emergency Stop 急停断电按钮。
+\end{itemize}
+
+\subsection{5.4 机器人开机与复位规范}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{开机前手动校零}：在闭合动力总电源前，必须手动辅助将各个关节恢复到标准标定零位，严禁在关节扭曲受力或机械极限位置强制加电。
+    \item \textbf{低压先通，高压后启}：先开机载工控机与控制系统确认自检通过，高声口头警示\textit{“注意上高压！”}后方可合闸动力电源。
+\end{enumerate}
+
+\vspace{1.5cm}
+\begin{center}
+    \rule{0.6\textwidth}{0.5pt}\\[0.3cm]
+    {\small \textsf{Robot工作坊 · BigHeroX 战队研发委员会 编制}}\\[0.1cm]
+    {\footnotesize \textsf{All Rights Reserved © 2026}}
+\end{center}
+
+\end{document}
