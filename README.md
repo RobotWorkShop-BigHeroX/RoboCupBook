@@ -10,6 +10,7 @@
 **A Comprehensive Onboarding Handbook & Engineering Roadmap for RoboCup Humanoid Soccer League (HSL)**
 
 [![Release: v1.0.0](https://img.shields.io/badge/Release-v1.0.0-blue.svg)](https://github.com/RobotWorkShop-BigHeroX/RoboCupBook/releases)
+[![Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Online-brightgreen.svg)](https://robotworkshop-bigherox.github.io/RoboCupBook/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![uv](https://img.shields.io/badge/uv-package%20manager-blueviolet.svg)](https://github.com/astral-sh/uv)
@@ -19,6 +20,8 @@
 
 *面向对于 RoboCup 及人形机器人足球联赛（HSL）完全不了解的新成员的系统入门手册*  
 *湖南大学 Robot 工作坊 · BigHeroX 战队倾力打造*
+
+**🌐 在线阅读站点：[https://robotworkshop-bigherox.github.io/RoboCupBook/](https://robotworkshop-bigherox.github.io/RoboCupBook/)**
 
 *Powered by [uv](https://github.com/astral-sh/uv) package manager ⚡ and XeLaTeX Document Engine 📄*
 

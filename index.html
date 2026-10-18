@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoboCup HSL 新人入门手册 | BigHeroX 战队</title>
+  <meta name="description" content="面向 RoboCup 及人形机器人足球联赛 (HSL) 零基础新成员的权威入门指引与知识工程体系 - 湖南大学 Robot 工作坊 BigHeroX 战队">
+  <link rel="icon" type="image/jpeg" href="public-resource/ima/BigHeroX.jpg">
+
+  <!-- Google Fonts & CDN Libraries -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-tertiary: #1f293d;
+      --bg-glass: rgba(17, 24, 39, 0.85);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --border-focus: #3b82f6;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-red: #ef4444;
+      --accent-green: #10b981;
+      --card-bg: rgba(31, 41, 55, 0.5);
+      --sidebar-width: 290px;
+      --toc-width: 240px;
+      --header-height: 64px;
+      --code-bg: #161e2e;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f5f9;
+      --bg-glass: rgba(255, 255, 255, 0.9);
+      --border-color: rgba(0, 0, 0, 0.1);
+      --border-focus: #2563eb;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --card-bg: #ffffff;
+      --code-bg: #f1f5f9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* 顶部滚动进度条 */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #06b6d4, #ef4444);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease-out;
+    }
+
+    /* 顶部导航栏 */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: var(--bg-glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 900;
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logos {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-logos img {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, var(--text-main), #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-badge {
+      font-size: 0.72rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 7px 12px 7px 32px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      outline: none;
+      width: 210px;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      width: 260px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      width: 14px;
+      height: 14px;
+      fill: var(--text-muted);
+    }
+
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-pdf:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.45);
+    }
+
+    .icon-btn {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent-blue);
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+    /* 主布局 */
+    .app-layout {
+      display: flex;
+      margin-top: var(--header-height);
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    /* 左侧边栏导航 */
+    .sidebar {
+      width: var(--sidebar-width);
+      position: fixed;
+      top: var(--header-height);
+      bottom: 0;
+      left: 0;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      overflow-y: auto;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 800;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-weight: 700;
+      padding: 8px 12px 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      color: var(--text-main);
+      background: var(--bg-tertiary);
+    }
+
+    .nav-item.active {
+      color: white;
+      background: var(--accent-blue);
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
+    }
+
+    .nav-num {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+      text-align: center;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .nav-item.active .nav-num {
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* 正文主体区域 */
+    .content-wrapper {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 40px 48px;
+      max-width: 960px;
+      min-width: 0;
+    }
+
+    /* 右侧大纲 (TOC) */
+    .toc-sidebar {
+      width: var(--toc-width);
+      position: fixed;
+      top: calc(var(--header-height) + 40px);
+      right: 24px;
+      max-height: calc(100vh - var(--header-height) - 60px);
+      overflow-y: auto;
+      padding-left: 18px;
+      border-left: 1px solid var(--border-color);
+      font-size: 0.82rem;
+    }
+
+    .toc-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .toc-link {
+      display: block;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 4px 0;
+      line-height: 1.4;
+      transition: color 0.15s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toc-link:hover, .toc-link.active {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    .toc-link.depth-3 {
+      padding-left: 14px;
+      font-size: 0.78rem;
+    }
+
+    /* Markdown 渲染美化样式 */
+    .markdown-body h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.02em;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.6rem;
+    }
+
+    .markdown-body h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 0.8rem;
+      letter-spacing: -0.01em;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.4rem;
+    }
+
+    .markdown-body h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.6rem;
+      color: var(--accent-cyan);
+    }
+
+    .markdown-body p {
+      margin-bottom: 1.1rem;
+      color: var(--text-main);
+    }
+
+    .markdown-body ul, .markdown-body ol {
+      margin-bottom: 1.2rem;
+      padding-left: 1.5rem;
+    }
+
+    .markdown-body li {
+      margin-bottom: 0.4rem;
+    }
+
+    .markdown-body blockquote {
+      border-left: 4px solid var(--accent-blue);
+      background: var(--card-bg);
+      padding: 12px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1.4rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* GitHub Alert 样式转换 */
+    .alert-box {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 1.4rem;
+      border-left: 4px solid;
+    }
+    .alert-note { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
+    .alert-tip { background: rgba(16, 185, 129, 0.1); border-color: #10b981; }
+    .alert-important { background: rgba(168, 85, 247, 0.1); border-color: #a855f7; }
+    .alert-warning { background: rgba(245, 158, 11, 0.1); border-color: #f59e0b; }
+    .alert-caution { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+
+    .markdown-body pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin-bottom: 1.4rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.88rem;
+    }
+
+    .markdown-body code {
+      font-family: 'Fira Code', monospace;
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: #93c5fd;
+    }
+
+    .markdown-body pre code {
+      padding: 0;
+      background: transparent;
+      color: inherit;
+    }
+
+    .markdown-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.88rem;
+    }
+
+    .markdown-body th, .markdown-body td {
+      border: 1px solid var(--border-color);
+      padding: 9px 14px;
+      text-align: left;
+    }
+
+    .markdown-body th {
+      background: var(--bg-tertiary);
+      font-weight: 600;
+      color: var(--accent-cyan);
+    }
+
+    .markdown-body tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .markdown-body a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(59, 130, 246, 0.5);
+      transition: border-bottom-color 0.2s;
+    }
+
+    .markdown-body a:hover {
+      border-bottom-color: var(--accent-blue);
+    }
+
+    /* 翻页导航 */
+    .pager-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 50px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .pager-btn {
+      display: flex;
+      flex-direction: column;
+      padding: 14px 20px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+      flex: 1;
+      max-width: 320px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .pager-btn:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .pager-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-weight: 700;
+    }
+
+    .pager-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+    }
+
+    .pager-btn.next {
+      text-align: right;
+      margin-left: auto;
+    }
+
+    /* 移动端响应式 */
+    @media (max-width: 1180px) {
+      .toc-sidebar {
+        display: none;
+      }
+      .content-wrapper {
+        margin-right: 0;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .content-wrapper {
+        margin-left: 0;
+        padding: 24px 18px;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      .search-box {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+
+  <!-- 顶部 Header -->
+  <header>
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <button class="icon-btn menu-toggle" id="menu-btn" title="菜单">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+      <a href="#readme" class="brand-container">
+        <div class="brand-logos">
+          <img src="public-resource/ima/RobotWorkShop.jpg" alt="RobotWorkShop">
+          <img src="public-resource/ima/BigHeroX.jpg" alt="BigHeroX">
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">RoboCup HSL 新人手册</span>
+          <span class="brand-badge">Robot工作坊 · BigHeroX</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24"><path d="M21.71 20.29l-5.4-5.4A8.93 8.93 0 0 0 18 10a9 9 0 1 0-9 9 8.93 8.93 0 0 0 4.89-1.31l5.4 5.4a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.4zM4 10a6 6 0 1 1 6 6 6 6 0 0 1-6-6z"/></svg>
+        <input type="text" id="search-input" placeholder="搜索手册内容...">
+      </div>
+      <a href="RoboCup_HSL_Handbook_v1.0.0.pdf" download class="btn-pdf" title="下载高清标准 PDF (v1.0.0)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        下载 PDF
+      </a>
+      <a href="https://github.com/RobotWorkShop-BigHeroX/RoboCupBook" target="_blank" class="icon-btn" title="查看 GitHub 仓库">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+      <button class="icon-btn" id="theme-btn" title="切换暗黑/明亮主题">
+        <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- 左侧菜单 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section-title">入门导读</div>
+      <a class="nav-item active" data-doc="README.md" href="#readme">
+        <span class="nav-num">★</span>
+        <span>手册概览与愿景</span>
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top: 12px;">核心章节</div>
+      <a class="nav-item" data-doc="docs/01-robocup-hsl-introduction.md" href="#01-robocup-hsl-introduction">
+        <span class="nav-num">01</span>
+        <span>1 RoboCup介绍与赛制</span>
+      </a>
+      <a class="nav-item" data-doc="docs/02-teams-and-repositories.md" href="#02-teams-and-repositories">
+        <span class="nav-num">02</span>
+        <span>1.2 全球历史强队谱系</span>
+      </a>
+      <a class="nav-item" data-doc="docs/03-bigherox-platform.md" href="#03-bigherox-platform">
+        <span class="nav-num">03</span>
+        <span>2 BigHeroX 平台资产</span>
+      </a>
+      <a class="nav-item" data-doc="docs/04-learning-roadmap.md" href="#04-learning-roadmap">
+        <span class="nav-num">04</span>
+        <span>3 新成员学习路线图</span>
+      </a>
+      <a class="nav-item" data-doc="docs/05-information-channels.md" href="#05-information-channels">
+        <span class="nav-num">05</span>
+        <span>4 官方消息公告渠道</span>
+      </a>
+      <a class="nav-item" data-doc="docs/06-safety-handbook.md" href="#06-safety-handbook">
+        <span class="nav-num">06</span>
+        <span>5 实验室操作安全守则</span>
+      </a>
+
+      <div class="sidebar-footer">
+        <div>🔒 私有模块: <span style="color: var(--accent-cyan);">robocup-zvalley</span></div>
+        <div>编著者: hongli (2868014836@qq.com)</div>
+        <div>贡献者: hanxu chen</div>
+      </div>
+    </aside>
+
+    <!-- 主正文区域 -->
+    <main class="content-wrapper">
+      <article class="markdown-body" id="article-content">
+        <div style="text-align: center; padding: 60px 0; color: var(--text-muted);">
+          加载手册内容中...
+        </div>
+      </article>
+
+      <!-- 底部翻页 -->
+      <div class="pager-container" id="pager-container">
+        <a class="pager-btn prev" id="pager-prev" style="display: none;">
+          <span class="pager-label">← 上一章节</span>
+          <span class="pager-title" id="pager-prev-title"></span>
+        </a>
+        <a class="pager-btn next" id="pager-next" style="display: none;">
+          <span class="pager-label">下一章节 →</span>
+          <span class="pager-title" id="pager-next-title"></span>
+        </a>
+      </div>
+    </main>
+
+    <!-- 右侧 TOC 大纲 -->
+    <aside class="toc-sidebar" id="toc-sidebar">
+      <div class="toc-title">本页大纲</div>
+      <div id="toc-content"></div>
+    </aside>
+  </div>
+
+  <script>
+    // 章节路由列表
+    const chapters = [
+      { id: 'readme', doc: 'README.md', title: '手册概览与愿景' },
+      { id: '01-robocup-hsl-introduction', doc: 'docs/01-robocup-hsl-introduction.md', title: '1 RoboCup介绍与赛制' },
+      { id: '02-teams-and-repositories', doc: 'docs/02-teams-and-repositories.md', title: '1.2 全球历史强队谱系' },
+      { id: '03-bigherox-platform', doc: 'docs/03-bigherox-platform.md', title: '2 BigHeroX 平台资产' },
+      { id: '04-learning-roadmap', doc: 'docs/04-learning-roadmap.md', title: '3 新成员学习路线图' },
+      { id: '05-information-channels', doc: 'docs/05-information-channels.md', title: '4 官方消息公告渠道' },
+      { id: '06-safety-handbook', doc: 'docs/06-safety-handbook.md', title: '5 实验室操作安全守则' }
+    ];
+
+    let currentDocIndex = 0;
+    const docCache = {};
+
+    // Marked 配置
+    marked.setOptions({
+      highlight: function(code, lang) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      },
+      gfm: true,
+      breaks: true
+    });
+
+    // 解析 Alert 语法 (> [!NOTE] 等)
+    function transformAlerts(html) {
+      return html
+        .replace(/<blockquote>\s*<p>\s*\[!NOTE\]([\s\S]*?)<\/blockquote>/gi, '<div class="alert-box alert-note"><strong>ℹ️ 注意 (Note)</strong><p>$1</div>')
+        .replace(/<blockquote>\s*<p>\s*\[!TIP\]([\s\S]*?)<\/blockquote>/gi, '<div class="alert-box alert-tip"><strong>💡 提示 (Tip)</strong><p>$1</div>')
+        .replace(/<blockquote>\s*<p>\s*\[!IMPORTANT\]([\s\S]*?)<\/blockquote>/gi, '<div class="alert-box alert-important"><strong>📌 重点 (Important)</strong><p>$1</div>')
+        .replace(/<blockquote>\s*<p>\s*\[!WARNING\]([\s\S]*?)<\/blockquote>/gi, '<div class="alert-box alert-warning"><strong>⚠️ 警告 (Warning)</strong><p>$1</div>')
+        .replace(/<blockquote>\s*<p>\s*\[!CAUTION\]([\s\S]*?)<\/blockquote>/gi, '<div class="alert-box alert-caution"><strong>🛑 危险 (Caution)</strong><p>$1</div>');
+    }
+
+    // 加载文档
+    async function loadDoc(index) {
+      currentDocIndex = index;
+      const target = chapters[index];
+      const contentEl = document.getElementById('article-content');
+
+      // 更新侧边栏高亮
+      document.querySelectorAll('.nav-item').forEach((el, idx) => {
+        el.classList.toggle('active', idx === index);
+      });
+
+      // 提取或缓存内容
+      let markdownText = docCache[target.doc];
+      if (!markdownText) {
+        try {
+          const resp = await fetch(target.doc);
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          markdownText = await resp.text();
+          docCache[target.doc] = markdownText;
+        } catch (err) {
+          contentEl.innerHTML = `<div style="color: #ef4444; padding: 40px;"><h3>加载失败</h3><p>${err.message}</p></div>`;
+          return;
+        }
+      }
+
+      // 渲染 HTML
+      const rawHtml = marked.parse(markdownText);
+      contentEl.innerHTML = transformAlerts(rawHtml);
+
+      // 生成右侧目录
+      buildTOC();
+
+      // 更新翻页按钮
+      updatePager();
+
+      // 滚动置顶
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 生成本页目录与标题 ID
+    function buildTOC() {
+      const tocContainer = document.getElementById('toc-content');
+      tocContainer.innerHTML = '';
+      const headings = document.getElementById('article-content').querySelectorAll('h2, h3');
+
+      headings.forEach((h, idx) => {
+        const id = 'heading-' + idx;
+        h.id = id;
+        const link = document.createElement('a');
+        link.className = 'toc-link ' + (h.tagName === 'H3' ? 'depth-3' : '');
+        link.textContent = h.textContent.replace(/^#+\s*/, '');
+        link.href = '#' + id;
+        link.onclick = (e) => {
+          e.preventDefault();
+          h.scrollIntoView({ behavior: 'smooth' });
+        };
+        tocContainer.appendChild(link);
+      });
+    }
+
+    // 翻页器
+    function updatePager() {
+      const prevBtn = document.getElementById('pager-prev');
+      const nextBtn = document.getElementById('pager-next');
+
+      if (currentDocIndex > 0) {
+        prevBtn.style.display = 'flex';
+        document.getElementById('pager-prev-title').textContent = chapters[currentDocIndex - 1].title;
+        prevBtn.onclick = () => location.hash = chapters[currentDocIndex - 1].id;
+      } else {
+        prevBtn.style.display = 'none';
+      }
+
+      if (currentDocIndex < chapters.length - 1) {
+        nextBtn.style.display = 'flex';
+        document.getElementById('pager-next-title').textContent = chapters[currentDocIndex + 1].title;
+        nextBtn.onclick = () => location.hash = chapters[currentDocIndex + 1].id;
+      } else {
+        nextBtn.style.display = 'none';
+      }
+    }
+
+    // 路由监听
+    function handleRoute() {
+      const hash = location.hash.replace('#', '') || 'readme';
+      const idx = chapters.findIndex(c => c.id === hash);
+      if (idx !== -1) {
+        loadDoc(idx);
+      } else {
+        loadDoc(0);
+      }
+    }
+
+    window.addEventListener('hashchange', handleRoute);
+    window.addEventListener('load', handleRoute);
+
+    // 滚动进度指示
+    window.addEventListener('scroll', () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalScroll) * 100;
+      document.getElementById('progress-bar').style.width = Math.min(100, Math.max(0, progress)) + '%';
+    });
+
+    // 移动端抽屉开关
+    const menuBtn = document.getElementById('menu-btn');
+    const sidebar = document.getElementById('sidebar');
+    menuBtn.onclick = () => sidebar.classList.toggle('open');
+    document.querySelector('.content-wrapper').onclick = () => sidebar.classList.remove('open');
+
+    // 主题切换
+    const themeBtn = document.getElementById('theme-btn');
+    let isDark = true;
+    themeBtn.onclick = () => {
+      isDark = !isDark;
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    };
+  </script>
+</body>
+</html>
