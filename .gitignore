@@ -1,0 +1,76 @@
+# ==========================================
+# Project-specific Ignore
+# ==========================================
+# 忽略杂项/临时资料目录
+Misc/
+misc/
+
+# Office 临时锁定文件 (编辑 Word/PPT/Excel 时自动生成)
+~$*
+.~lock.*
+
+# ==========================================
+# Operating System Files
+# ==========================================
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ==========================================
+# Editor & IDE Cache
+# ==========================================
+# VS Code / Cursor / Antigravity
+.vscode/.history/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains (PyCharm / CLion / IDEA)
+.idea/
+*.iws
+*.iml
+
+# ==========================================
+# Logs & Temporary Files
+# ==========================================
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# ==========================================
+# Programming Environments (Optional)
+# ==========================================
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# Node
+node_modules/
+npm-debug.log*
