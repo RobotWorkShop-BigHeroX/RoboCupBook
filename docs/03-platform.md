@@ -120,16 +120,57 @@
 3. **急停按钮的物理后果认知**：必须深刻认识到急停按钮是硬件切断动力，切断后机器人将瞬间失去任何支撑力矩并直接按自由落体撞地砸损。常规测试出现失控苗头时，应当优先使用遥控器按下组合键切入阻尼状态，仅在遭遇线路冒烟、明火或人员安全受到威胁时才允许拍下急停。
 4. **更换器件后的绝缘核验**：在更换电机、传感器或重新走线后，必须先用万用表排查电源对地是否短路，确认信号线无错位后方可接入电池上电。
 
-## 3.7 队内私有资产与子模块引用
+## 3.7 机器人平台与网站平台私有资产（Zvalley-resource）
 
-项目在 [`Zvalley-resource/`](../Zvalley-resource/) 目录下归档了本队核心技术手册与平台参数文档：
-- [`T4小人形机器人使用手册-202604-V1.pdf`](../Zvalley-resource/T4小人形机器人使用手册-202604-V1.pdf)
-- `人形机器人使用说明书-v1.2.pdf`
-- `人形机器人使用说明书-v1.7.pdf`
-- `中科云谷RoboOps介绍.pdf`
+本项目在 [`Zvalley-resource/`](../Zvalley-resource/) 目录下以独立私有子模块的形式归档了本队核心技术手册与平台参数文档：
 
-具备仓库权限的队员在初次克隆代码时，必须执行递归初始化以同步子模块资源：
+### 1. T4 机器人硬件与使用手册
+- [`T4小人形机器人使用手册-202604-V1.pdf`](../Zvalley-resource/T4小人形机器人使用手册-202604-V1.pdf)：详细记录 T4 机器人的整机尺寸包络、连杆长度、伺服驱动器通讯协议报文与关节限位角度。
+- [`人形机器人使用说明书-v1.7.pdf`](../Zvalley-resource/人形机器人使用说明书-v1.7.pdf)：记录现役版本机器人的电源管理规范、电气走线拓扑与控制系统底层初始化时序。
+- [`人形机器人使用说明书-v1.2.pdf`](../Zvalley-resource/人形机器人使用说明书-v1.2.pdf)：提供历史版本参数作为对照参考，用于排查驱动固件兼容性问题。
+
+### 2. 网站运维平台（RoboOps）与操作指南
+- [`中科智谷RoboOps操作指南.pdf`](../Zvalley-resource/中科智谷RoboOps操作指南.pdf)：中科智谷为机载系统与地面站协同开发的运维监控平台。该平台承担机队运行状态心跳监听、远程固件升级分发、实时传感器指标采集与场地无线通信拓扑可视化职责。测试前必须通过该平台核验机器人电池单体电压与电机温度。
+
+具备仓库访问权限的队员在初次克隆主工程后，必须在终端执行递归初始化以拉取私有子模块资源：
 ```bash
 git submodule update --init --recursive
 ```
-任何涉及底盘运动学逆解算修改或驱动协议扩展的任务，均应优先查阅手册中的标准寄存器映射表与线缆引脚定义图。
+任何涉及底层通信协议修改、逆运动学连杆长度校验或电气接口排查的任务，均应直接查阅对应手册中的标准工程图纸。
+
+## 3.8 中联重科 Zvalley 开源生态资源导航
+
+中联重科（Zvalley）为人形机器人开发提供了完整的算法开发包、硬件驱动 SDK 与高精度仿真模型资产，官方开放资料入口如下：
+
+- **开放资料总站**：[https://eai.zvalley.com/openSource](https://eai.zvalley.com/openSource)  
+  汇总了 Zvalley 官方发布的全部机器人硬件规范、固件更新日志与技术社区公告。
+- **中联重科 SDK 说明网站**：[https://eai.zvalley.com/openSource/detail/2087512650565427200](https://eai.zvalley.com/openSource/detail/2087512650565427200)  
+  提供底层伺服通信驱动、总线指令格式、编码器回传校准与急停保护逻辑的详细编程接口说明。
+- **中联重科 SDK-GitHub 网站**：[http://github.com/Zvalley-Robotics/zv_robot_sdk](http://github.com/Zvalley-Robotics/zv_robot_sdk)  
+  官方开源 C++ / Python 控制接口代码仓库，提供机载端通信守护进程的标准实现。
+- **Z01 机器人仿真资产网站**：[https://eai.zvalley.com/openSource/detail/2109932634205204480](https://eai.zvalley.com/openSource/detail/2109932634205204480)  
+  提供基于 Gazebo / Isaac Sim 的全套高精度 URDF 模型、网格碰撞体与动力学惯量矩阵资产。
+- **Zlab_Gym 开发手册**：[https://eai.zvalley.com/openSource/detail/2109922358609195008](https://eai.zvalley.com/openSource/detail/2109922358609195008)  
+  提供结合强化学习环境进行步态运动控制训练的标准接口规范与调优指南。
+
+## 3.9 本队伍公开技术资产与资格赛交付物（public-resource）
+
+根据 RoboCup HSL 资格审查流程，各参赛队伍必须提交包含技术报告（TDP）、机械硬件规范（Robots）、软件系统配置（Software）以及实机技能演示视频（Video）在内的完整资格审查包。
+
+本队历年公开提交的技术资产统一归档于项目 [`public-resource/`](../public-resource/) 目录下：
+
+### 1. 本队核心交付资产（public-resource/MyTDP/）
+- **队伍技术报告（TDP）**：
+  - [`public-resource/MyTDP/BigHeroX_2026_TDP.pdf`](../public-resource/MyTDP/BigHeroX_2026_TDP.pdf)：本队 2026 赛季正式技术报告，详述了感知模型轻量化、步态抗滑补偿与状态机行为决策架构。
+  - [`public-resource/MyTDP/BigHeroX_2025_TDP.pdf`](../public-resource/MyTDP/BigHeroX_2025_TDP.pdf)：本队 2025 赛季技术报告，用于对照评估系统演化脉络。
+- **机器人硬件规格报告（Robots）**：[`public-resource/MyTDP/Robots.pdf`](../public-resource/MyTDP/Robots.pdf)，记录 T4 机器人的尺寸、全备重量、关节配置与检录合规性认证数据。
+- **软件系统配置报告（Software）**：[`public-resource/MyTDP/software.pdf`](../public-resource/MyTDP/software.pdf)，记录机载 ROS 2 系统版本、通信中间件配置与核心推理节点调度周期。
+- **资格审查视频演示（Video）**：参赛队伍必须提交包含全自主开球、足球追踪、动态避障、稳健射门与跌倒起立的连续实机无剪辑视频，官方审核记录可查阅 [RoboCup HSL 资格赛各队官方总表](https://hsl.robocup.org/qualified-teams/)。
+
+### 2. 国际强队参考技术报告（public-resource/othersTDP/）
+- **清华大学 Hephaestus 报告**：[`public-resource/othersTDP/Tsinghua_Hephaestus-tdp-6788f534a4752.pdf`](../public-resource/othersTDP/Tsinghua_Hephaestus-tdp-6788f534a4752.pdf)
+- **清华大学 THMOS 报告**：[`public-resource/othersTDP/THMOS-tdp-6798ef4a3c171.pdf`](../public-resource/othersTDP/THMOS-tdp-6798ef4a3c171.pdf)
+- **中国农业大学 Mountain Sea 报告**：[`public-resource/othersTDP/CAU_Mountain_Sea-tdp-67d3896715fb9.pdf`](../public-resource/othersTDP/CAU_Mountain_Sea-tdp-67d3896715fb9.pdf)
+- **UCLA RoMeLa 报告**：[`public-resource/othersTDP/RoMeLa_UCLA-tdp-67919ee6551ca.pdf`](../public-resource/othersTDP/RoMeLa_UCLA-tdp-67919ee6551ca.pdf)
+- **汉阳大学 HERoEHS 报告**：[`public-resource/othersTDP/HERoEHS-tdp-67938e21e09a0.pdf`](../public-resource/othersTDP/HERoEHS-tdp-67938e21e09a0.pdf)
+

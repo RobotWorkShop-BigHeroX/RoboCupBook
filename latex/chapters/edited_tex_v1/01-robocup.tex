@@ -19,7 +19,7 @@ RoboCup 于 1997 年举办首届赛事。其长期目标，是推动全自主机
 
 \subsection{相关组别与技术积累}
 
-之所以要追踪 RoboCup 早期组别的技术演进，是因为人形机器人足球大量继承了标准平台组（SPL）与中型组（MSL）沉淀下来的技术资产。
+之所以要追踪 RoboCup 早期组别的技术演进，是因为人形机器人足球大量继承了标准平台组（SPL）与中型组（MSL）沉淀下来的技术资产。国际竞赛委员会近期对联赛组织形态进行了深度重组调整：正式将原标准平台组（SPL，以 NAO 机器人为统一硬件的组别）全面并入人形联赛体系，彻底停办了轮式中型组（MSL），并计划在后续赛季逐步取消纯软件的 2D/3D 仿真足球组。其核心导向，是将全球各顶尖高校与研究机构的研发力量高度集中于攻坚全自主双足人形机器人足球（HSL）。
 
 \begin{table}[H]
 \centering
@@ -32,7 +32,7 @@ SPL 标准平台组 & 并入人形体系 & 提供了成熟的粒子滤波定位�
 \addlinespace
 MSL 中型组 & 停办 & 沉淀了全向底盘轨迹规划与高速弹射击球算法。双足行走虽然无法直接借用其运动学，但其多机跑位几何建模依然具备参考价值。 \\
 \addlinespace
-仿真组 & 压缩规模 & 提供了低成本算法回归与策略预演环境。能够用于跑通通信链路与战术逻辑，但无法反映真机足底接触碰撞与电机热衰减。 \\
+仿真组 & 计划取消 & 提供了低成本算法回归与策略预演环境。能够用于跑通通信链路与战术逻辑，但无法反映真机足底接触碰撞与电机热衰减。 \\
 \addlinespace
 @Home 服务组 & 独立发展 & 专注于家庭生活服务场景，与足球对抗无关。本书不涉及。 \\
 \bottomrule
@@ -44,7 +44,14 @@ MSL 中型组 & 停办 & 沉淀了全向底盘轨迹规划与高速弹射击球�
 
 \subsection{一场比赛的全过程}
 
-一场正式比赛不仅包含场上的动态对抗，还涵盖严格的赛前检录、多阶段状态流转以及赛后故障维护。软件必须针对每一个裁判状态设计受控的行为边界，尤其要使机器人在非对抗阶段保持绝对受控。
+HSL 赛事目前采用 7 人制对抗标准，正规比赛全场时长为 20 分钟（分为上下半场各 10 分钟，中场休息 5 分钟）。比赛不仅包含场上的动态对抗，还涵盖严格的赛前检录、多阶段状态流转以及赛后故障维护。软件必须针对每一个裁判状态设计受控的行为边界，尤其要使机器人在非对抗阶段保持绝对受控。
+
+关于赛事规则的详细推导、条款解读与实战操作规范，请直接查阅以下资料：
+\begin{itemize}[leftmargin=*]
+    \item \textbf{战队自主归纳规则手册：} \href{https://hcnwvqtaepc6.feishu.cn/wiki/PHPCwZCI8iPhDhksyzNcBFKRnIh?from=from_copylink}{BigHeroX 战队 HSL 比赛规则核心解读与推导手册（飞书文档）}
+    \item \textbf{赛事官方规则源码仓库：} \url{https://github.com/RoboCup-HumanoidSoccerLeague/HSL-Rules}
+    \item \textbf{官方正式规则文档：} \href{https://github.com/RoboCup-HumanoidSoccerLeague/HSL-Rules/blob/main/Rules.pdf}{官方标准 Rules.pdf 文档}
+\end{itemize}
 
 \begin{table}[H]
 \centering
@@ -117,7 +124,13 @@ HSL 赛事规则对机载系统设计施加了硬性约束，直接决定了软�
 
 \subsection{裁判盒：机器人听谁的话}
 
-GameController（比赛控制程序，简称裁判盒或 GC）是球场上的最高裁决信号源。机载系统通过监听其网络广播决定程序执行状态。
+GameController（比赛控制程序，简称裁判盒或 GC）是球场上的最高裁决信号源。其开源项目与联调资源托管于官方代码仓库：
+\begin{itemize}[leftmargin=*]
+    \item \textbf{裁判盒程序源码仓库：} \url{https://github.com/RoboCup-HumanoidSoccerLeague/GameController}
+    \item \textbf{编译成品与历史版本下载：} \url{https://github.com/RoboCup-HumanoidSoccerLeague/GameController/releases}
+\end{itemize}
+
+机载系统通过监听裁判盒的网络广播决定自身运行状态：
 
 \begin{itemize}[leftmargin=*]
     \item \textbf{工作机制：} 主裁判在现场控制台操作 GC 软件，切换赛事阶段；GC 通过场地局域网将结构化状态数据包持续广播至 UDP 3838 端口；场上各台机器人机载节点监听该端口并反序列化数据。\official
