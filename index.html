@@ -853,9 +853,9 @@
       </div>
 
       <!-- 下载 PDF -->
-      <a href="RoboCup_HSL_Handbook_v1.0.0.pdf" download class="action-btn primary" title="下载高清标准 PDF (v1.0.0)">
+      <a href="RoboCup_HSL_Handbook_v1.1.0.pdf" download class="action-btn primary" title="下载标准 PDF (v1.1.0)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        <span>PDF</span>
+        <span>PDF (v1.1.0)</span>
       </a>
 
       <!-- 源码仓库 -->
@@ -883,29 +883,37 @@
         <span class="drawer-num">★</span>
         <span>手册概览与说明</span>
       </a>
-      <a class="drawer-item" data-doc="docs/01-robocup-hsl-introduction.md" href="#01-robocup-hsl-introduction">
+      <a class="drawer-item" data-doc="docs/01-robocup.md" href="#01-robocup">
         <span class="drawer-num">01</span>
-        <span>1 RoboCup介绍与赛制</span>
+        <span>1 RoboCup 与 HSL</span>
       </a>
-      <a class="drawer-item" data-doc="docs/02-teams-and-repositories.md" href="#02-teams-and-repositories">
+      <a class="drawer-item" data-doc="docs/02-teams.md" href="#02-teams">
         <span class="drawer-num">02</span>
-        <span>1.2 全球历史强队谱系</span>
+        <span>2 强队与开源资产</span>
       </a>
-      <a class="drawer-item" data-doc="docs/03-bigherox-platform.md" href="#03-bigherox-platform">
+      <a class="drawer-item" data-doc="docs/03-platform.md" href="#03-platform">
         <span class="drawer-num">03</span>
-        <span>2 BigHeroX 平台资产</span>
+        <span>3 机器人平台：T4 与 Zvalley 生态</span>
       </a>
-      <a class="drawer-item" data-doc="docs/04-learning-roadmap.md" href="#04-learning-roadmap">
+      <a class="drawer-item" data-doc="docs/04-learning.md" href="#04-learning">
         <span class="drawer-num">04</span>
-        <span>3 新成员学习路线图</span>
+        <span>4 学习路线与开发基础</span>
       </a>
-      <a class="drawer-item" data-doc="docs/05-information-channels.md" href="#05-information-channels">
+      <a class="drawer-item" data-doc="docs/05-channels.md" href="#05-channels">
         <span class="drawer-num">05</span>
-        <span>4 官方消息与交流渠道</span>
+        <span>5 消息渠道</span>
       </a>
-      <a class="drawer-item" data-doc="docs/06-safety-handbook.md" href="#06-safety-handbook">
+      <a class="drawer-item" data-doc="docs/06-safety.md" href="#06-safety">
         <span class="drawer-num">06</span>
-        <span>5 实验室操作安全守则</span>
+        <span>6 实验室安全守则</span>
+      </a>
+      <a class="drawer-item" data-doc="docs/07-competition.md" href="#07-competition">
+        <span class="drawer-num">07</span>
+        <span>7 第一次参赛：从报名到上场</span>
+      </a>
+      <a class="drawer-item" data-doc="docs/08-appendix.md" href="#08-appendix">
+        <span class="drawer-num">08</span>
+        <span>附录：参考手册与速查</span>
       </a>
     </div>
 
@@ -950,12 +958,14 @@
     // 章节路由列表
     const chapters = [
       { id: 'readme', doc: 'README.md', title: '手册概览与说明' },
-      { id: '01-robocup-hsl-introduction', doc: 'docs/01-robocup-hsl-introduction.md', title: '1 RoboCup介绍与赛制' },
-      { id: '02-teams-and-repositories', doc: 'docs/02-teams-and-repositories.md', title: '1.2 全球历史强队谱系' },
-      { id: '03-bigherox-platform', doc: 'docs/03-bigherox-platform.md', title: '2 BigHeroX 平台资产' },
-      { id: '04-learning-roadmap', doc: 'docs/04-learning-roadmap.md', title: '3 新成员学习路线图' },
-      { id: '05-information-channels', doc: 'docs/05-information-channels.md', title: '4 官方消息与交流渠道' },
-      { id: '06-safety-handbook', doc: 'docs/06-safety-handbook.md', title: '5 实验室操作安全守则' }
+      { id: '01-robocup', doc: 'docs/01-robocup.md', title: '1 RoboCup 与 HSL' },
+      { id: '02-teams', doc: 'docs/02-teams.md', title: '2 强队与开源资产' },
+      { id: '03-platform', doc: 'docs/03-platform.md', title: '3 机器人平台：T4 与 Zvalley 生态' },
+      { id: '04-learning', doc: 'docs/04-learning.md', title: '4 学习路线与开发基础' },
+      { id: '05-channels', doc: 'docs/05-channels.md', title: '5 消息渠道' },
+      { id: '06-safety', doc: 'docs/06-safety.md', title: '6 实验室安全守则' },
+      { id: '07-competition', doc: 'docs/07-competition.md', title: '7 第一次参赛：从报名到上场' },
+      { id: '08-appendix', doc: 'docs/08-appendix.md', title: '附录：参考手册与速查' }
     ];
 
     let currentDocIndex = 0;

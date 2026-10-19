@@ -43,8 +43,8 @@ def clean_auxiliary_files(latex_dir: Path):
 def build_pdf(clean: bool = False):
     root_dir = Path(__file__).resolve().parent.parent
     latex_dir = root_dir / "latex"
-    main_tex = latex_dir / "main.tex"
-    output_pdf = root_dir / "RoboCup_HSL_Handbook_v1.0.0.pdf"
+    main_tex = latex_dir / "main-v1.2.tex"
+    output_pdf = root_dir / "RoboCup_HSL_Handbook_v1.1.0.pdf"
 
     if not main_tex.exists():
         print(f"[-] 错误: 未找到主排版文件 {main_tex}", file=sys.stderr)
@@ -60,7 +60,7 @@ def build_pdf(clean: bool = False):
     print(f"[+] 源码目录: {latex_dir}")
     print("[*] 开始第一遍编译（生成章节与目录引用元数据）...")
 
-    cmd = [xelatex, "-interaction=nonstopmode", "-halt-on-error", "main.tex"]
+    cmd = [xelatex, "-interaction=nonstopmode", "-halt-on-error", "main-v1.2.tex"]
     result1 = subprocess.run(cmd, cwd=str(latex_dir), capture_output=True, text=True, encoding="utf-8", errors="replace")
     if result1.returncode != 0:
         print("[-] 第一遍编译失败！", file=sys.stderr)
@@ -74,7 +74,7 @@ def build_pdf(clean: bool = False):
         print(result2.stdout[-1500:], file=sys.stderr)
         sys.exit(1)
 
-    generated_pdf = latex_dir / "main.pdf"
+    generated_pdf = latex_dir / "main-v1.2.pdf"
     if not generated_pdf.exists():
         print(f"[-] 错误: 未检测到生成的 {generated_pdf}", file=sys.stderr)
         sys.exit(1)

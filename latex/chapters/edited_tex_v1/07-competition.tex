@@ -1,0 +1,113 @@
+% ==========================================
+% 第 7 章：第一次参赛
+% ==========================================
+\section{第一次参赛：从报名到上场}
+
+参赛工作除了研发，还包括资格材料、运输、现场检录和比赛流程。任何一项准备不足都可能影响参赛，即使机器人本身已经能够运行。
+
+\subsection{报名要准备什么}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.8cm} X p{2.6cm}}
+\toprule
+\textbf{材料} & \textbf{写什么，容易漏什么} & \textbf{提前多久} \\
+\midrule
+TDP & 硬件方案、软件架构、感知与决策、实验结果。容易漏的是「和去年比改了什么」 & 2 个月 \\
+\addlinespace
+资格视频 & 展示自主寻球、带球、射门和起身；按当届资格说明拍摄并确保动作可核验 & 1 个月 \\
+\addlinespace
+机器人参数表 & 尺寸、重量、自由度、传感器清单 & 1 个月 \\
+\addlinespace
+队伍信息 & 成员、指导老师、所属机构 & 随表提交 \\
+\bottomrule
+\end{tabularx}
+\caption{报名与资格审查阶段通常需要准备的材料。具体要求和截止日期以当届通知为准。}
+\end{table}
+
+资格视频应清楚展示机器人的自主行为。拍摄时可以保留机器人、场地和操作人员的全景，确保评审能够判断动作是否由机器人自主完成。具体拍摄要求以当届资格说明为准。
+
+\subsection{出发前：打包清单}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.6cm} X}
+\toprule
+\textbf{类别} & \textbf{清单} \\
+\midrule
+机器人 & 整机 \(\times\)2（能带就带备机）、备用关节、备用电池、充电器 \\
+\addlinespace
+工具 & 内六角全套、螺丝、扎带、热风枪、万用表、焊台 \\
+\addlinespace
+线材 & 网线、交换机、电源延长线、转换插头 \\
+\addlinespace
+计算 & 调试笔记本、备用硬盘、装好环境的 U 盘 \\
+\addlinespace
+耗材 & 备用脚底、胶带、防滑垫、清洁剂 \\
+\addlinespace
+文件 & 规则打印件、TDP 打印件、保险与签证材料 \\
+\bottomrule
+\end{tabularx}
+\caption{出发前需要核对的设备、工具、耗材和文件。}
+\end{table}
+
+\subsection{抵达赛场后的检查}
+
+抵达场地后，建议先完成以下检查，再进行整机测试：
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{确认网络。} 了解赛场网段、局域网限制和网络隔离要求，并确认裁判盒、机器人与调试机之间的通信方式符合现场规定。
+    \item \textbf{检查视觉参数。} 在实际场地检查曝光、白平衡和检测效果。实验室与赛场的光照条件不同，是否需要重新标定应由现场测试决定。
+    \item \textbf{检查比赛状态切换。} 使用裁判盒依次测试 INITIAL、READY、SET 和 PLAYING 等状态，确认机器人能够正确接收并响应状态变化。
+    \item \textbf{复核机器人尺寸。} 使用现场允许的量具确认尺寸、重量与报名材料一致，并留出处理测量差异的时间。
+\end{enumerate}
+
+\subsection{比赛日流程}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.4cm} X}
+\toprule
+\textbf{时间点} & \textbf{做什么} \\
+\midrule
+赛前 2 小时 & 充满电、检查结构、跑一次完整流程 \\
+\addlinespace
+赛前 1 小时 & 换好电池、确认队伍编号、和裁判对一遍规则 \\
+\addlinespace
+赛前 15 分钟 & 机器人进场、摆位、最后一次状态检查 \\
+\addlinespace
+比赛中 & 记录异常现象及发生时间；除非确有必要且留有验证时间，否则避免修改代码 \\
+\addlinespace
+赛后 30 分钟 & 复盘、改一处、重新验证，当天记录 \\
+\bottomrule
+\end{tabularx}
+\caption{比赛日各时间点的准备与检查事项。}
+\end{table}
+
+\subsection{现场调试与变更记录}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{一次只改一处。} 同时改三个参数，好了不知道哪个起作用，坏了也不知道哪个要退。
+    \item \textbf{改了就记。} 记下时间、改了什么、现象怎么变。赛后复盘全靠这本流水账。
+    \item \textbf{能回滚。} 改之前提交一次，或者至少备份文件。现场没有时间重写。
+\end{enumerate}
+
+\noindent 可以将赛前两小时设为本队的变更冻结点：此后原则上只调整经过验证的参数，不再改动软件架构。若必须修复严重故障，应先评估剩余验证时间和回滚方案。\advice
+
+\subsection{赛后复盘模板}
+
+建议在比赛当天完成记录，避免依赖几天后可能不准确的回忆：
+
+\begin{itemize}[leftmargin=*]
+    \item 这场输在哪：丢球、误判、走位、还是没电？
+    \item 哪个现象是第一次出现？之前有没有预兆？
+    \item 如果只改一处，改哪里？
+    \item 下一场之前必须验证什么？
+\end{itemize}
+
+\noindent 复盘记录应尽量对应到可观察的现象、可能原因和下一步验证任务。这样后续修改才有依据，也便于下一届队员了解问题是如何解决的。
+
+\newpage

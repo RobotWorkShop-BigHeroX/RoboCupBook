@@ -1,0 +1,114 @@
+% ==========================================
+% 第 2 章：强队与开源资产
+% ==========================================
+\section{强队与开源资产}
+
+开源代码和技术报告可以帮助新成员了解成熟系统的组织方式，也能提供可供验证的实现参考。不过，不同赛季、规则和硬件之间存在差异，阅读时需要判断哪些设计可以复用。
+
+下表列出几支值得研究的队伍，以及各自可能提供的参考方向。队伍成绩、技术报告和仓库状态应以官方资料为准。\official
+
+\subsection{八支队伍及其参考方向}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{p{1.9cm} p{2.6cm} p{1.5cm} X}
+\toprule
+\textbf{队伍} & \textbf{机构} & \textbf{地区} & \textbf{值得看的部分} \\
+\midrule
+B-Human & 不来梅大学 / DFKI & 德国 & 工程完整度。从相机到关节的整条链路都有文档，适合当第一份通读材料。 \\
+\addlinespace
+Rhoban FC & 波尔多大学 / CNRS & 法国 & 步态与踢球动作的参数化。想把动作调顺，看它的曲线设计。 \\
+\addlinespace
+NimbRo & 波恩大学 & 德国 & 全身动力学与自研硬件。要看「机器人怎么造」，看这里。 \\
+\addlinespace
+CIT Brains & 千叶工业大学 & 日本 & 高刚度关节控制与快速射门。 \\
+\addlinespace
+Hephaestus & 清华大学 & 中国 & 位姿估计与模型轻量化部署，和国内硬件适配的经验。 \\
+\addlinespace
+Mountain Sea & 中国农业大学 & 中国 & 多传感器融合、草皮上的步态补偿。 \\
+\addlinespace
+RoMeLa & UCLA & 美国 & 开源硬件平台（DARwIn-OP、ARTEMIS）的设计思路。 \\
+\addlinespace
+HERoEHS & 汉阳大学 & 韩国 & 结构轻量化与整机安全性设计。 \\
+\bottomrule
+\end{tabularx}
+\caption{八支队伍与各自的可读之处。完整名单与近年战绩见 hsl.robocup.org/qualified-teams。}
+\end{table}
+
+\subsection{B-Human：从它的文档入手}
+
+B-Human 会在赛后公开代码和技术报告。项目规模较大，初次阅读时不宜从目录中随机挑文件；先了解系统的功能分层，再沿着一条数据流追踪实现，通常更容易建立整体认识。
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{3.2cm} X}
+\toprule
+\textbf{层次} & \textbf{负责什么，你该看什么} \\
+\midrule
+感知（Perception） & 从图像里提特征：球、线、球门柱、其他机器人。看它怎么把一帧图拆成结构化的观测。 \\
+\addlinespace
+建模（Modeling） & 把观测变成状态：球的位置和速度、自己的位姿、对手在哪。看它的滤波器怎么写。 \\
+\addlinespace
+行为（Behavior） & 决定做什么：走位、抢球、传球、防守。看它的层次状态机怎么组织。 \\
+\addlinespace
+运动（Motion） & 把动作变成关节轨迹：步态、踢球、起身。看参数怎么暴露出来。 \\
+\addlinespace
+硬件（Hardware） & 和电机、IMU 通信。通常不用改，但要看得懂接口。 \\
+\bottomrule
+\end{tabularx}
+\caption{B-Human 的分层结构。具体目录名以当年代码仓库为准。}
+\end{table}
+
+\noindent\textbf{建议的阅读顺序：}
+
+\begin{enumerate}[leftmargin=*]
+    \item 先读当年的技术报告，把五层的关系画成一张图。
+    \item 再读数据结构定义。看它用什么类型表示「一个球」「一个位姿」——这决定了后面所有模块的接口。
+    \item 然后找入口：一帧图进来，第一个函数在哪；一个决策周期开始，从哪调用。
+    \item 最后挑一个模块深读，比如只读「球检测」这一条线，从图像到观测输出走通。
+\end{enumerate}
+
+\noindent\textbf{值得关注的三个工程设计：}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{黑板式的数据流。} 模块把结果写进共享结构，别的模块按需读，模块之间不直接互相调用。好处是加一个模块不用改一圈调用链。
+    \item \textbf{统一的坐标约定。} 全场只有一个「机器人坐标系」的定义，所有模块都用它。你们队要是每个模块各自转一次坐标，迟早对不上。
+    \item \textbf{参数外置。} 阈值、速度、角度全放配置文件，现场能改。改代码再编译，比赛现场来不及。
+\end{itemize}
+
+\subsection{其他队伍的参考方向}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Rhoban：} 其踢球动作采用参数化曲线组织。研究这类实现时，可以关注动作参数如何暴露给调试人员，以及参数变化如何影响动作轨迹。
+    \item \textbf{NimbRo：} 自研硬件与整机系统值得关注，尤其是结构设计、散热、布线和全身动力学之间的关系。
+    \item \textbf{Hephaestus 与 Mountain Sea：} 可重点查阅它们公开的定位、感知和步态相关资料，并结合本队使用的平台与场地条件判断其适用性。\advice
+\end{itemize}
+
+\subsection{如何阅读陌生代码仓库}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{先看文档和架构图。} 通过 README、技术报告和模块图了解项目的目标、依赖与整体结构，再进入具体代码。
+    \item \textbf{定位数据入口。} 确认图像、裁判盒状态和日志分别从哪里进入系统。入口明确后，才能沿数据流找到负责处理它们的模块。
+    \item \textbf{追踪一条完整功能链。} 例如从图像中的球检测开始，继续查看定位、目标选择、接近球和踢球动作分别由哪些模块完成。
+    \item \textbf{做一次小范围验证。} 修改一个参数，在相同条件下重新运行并比较结果，以确认自己对相关模块的理解。
+\end{enumerate}
+
+\noindent 代码阅读需要通过运行结果来验证。即使只调整一个参数，也应记录修改前后的现象，避免把对代码的猜测当成已经确认的结论。
+
+\subsection{TDP 怎么读}
+
+TDP（Team Description Paper，队伍技术说明文档）通常总结当年系统设计、实现方案和实验结果，可从官方队伍名单页获取。它面向评审，不一定包含所有实现细节，适合用于了解整体方案，再与代码、视频和历年版本对照。
+
+阅读时可以优先核对以下三件事：
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{他们用什么传感器、什么频率？} 这决定了方案的算力门槛，也决定了你能不能照搬。
+    \item \textbf{他们的瓶颈写在哪？} 注意报告是否说明了系统的局限，例如远距离检测不稳定、定位易受对称结构影响等。明确的局限有助于理解方案的适用范围。
+    \item \textbf{哪些内容是当年新增的？} 与上一年的报告对照，可以看出团队在哪些模块投入了开发资源，以及改动是否带来了可量化的结果。
+\end{enumerate}
+
+\noindent 技术报告呈现的是队伍选择记录和展示的内容。对于关键设计与性能结论，最好再查看实现、测试条件和对应版本。\advice
+
+\newpage

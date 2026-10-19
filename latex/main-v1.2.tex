@@ -1,0 +1,166 @@
+%!TEX program = xelatex
+\documentclass[11pt,a4paper]{ctexart}
+
+% ==========================================
+% 宏包引入与排版配置 (参考 RoboCup HSL Rules.tex 体系)
+% ==========================================
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.8cm, bottom=2.8cm}
+
+\usepackage{times}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+\usepackage[
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    urlcolor=blue!70!black,
+    citecolor=green!50!black,
+    bookmarksnumbered=true,
+    pdfstartview=FitH
+]{hyperref}
+
+% 提示框宏定义 (仿照 Rules.tex hintbox 风格)
+\newtcolorbox{noticebox}[1][]{
+    colback=blue!5!white,
+    colframe=blue!60!black,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=3mm,
+    boxrule=1pt,
+    left=4mm, right=4mm, top=3mm, bottom=3mm,
+    breakable
+}
+
+\newtcolorbox{dangerbox}[1][]{
+    colback=red!5!white,
+    colframe=red!70!black,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=3mm,
+    boxrule=1pt,
+    left=4mm, right=4mm, top=3mm, bottom=3mm,
+    breakable
+}
+
+\newtcolorbox{quotebox}{
+    colback=gray!8!white,
+    colframe=gray!40!white,
+    arc=2mm,
+    boxrule=0.5pt,
+    left=4mm, right=4mm, top=2.5mm, bottom=2.5mm,
+    breakable
+}
+
+% ==========================================
+% 页眉与页脚定制 (每页标明 Robot工作坊 与 BigHeroX)
+% ==========================================
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textbf{\textcolor{blue!80!black}{Robot工作坊}}}
+\rhead{\textbf{\textcolor{red!80!black}{BigHeroX 战队}}}
+\chead{\textcolor{gray}{\small RoboCup HSL 新人入门手册}}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ==========================================
+% 文档信息元数据
+% ==========================================
+\hypersetup{
+    pdftitle={RoboCup HSL 新人入门手册 - Robot工作坊 BigHeroX},
+    pdfauthor={hongli (2868014836@qq.com)},
+    pdfsubject={RoboCup Humanoid Soccer League Onboarding Handbook},
+    pdfkeywords={RoboCup, HSL, BigHeroX, RobotWorkShop, ROS 2, T4, Zvalley}
+}
+
+
+% ==========================================
+% 内容标记：事实来源三种，写作规范见 docs/style-guide.md
+% ==========================================
+\newcommand{\official}{\textcolor{blue!70!black}{\footnotesize\textsf{[官方]}}}
+\newcommand{\practice}{\textcolor{green!45!black}{\footnotesize\textsf{[本队]}}}
+\newcommand{\advice}{\textcolor{orange!85!black}{\footnotesize\textsf{[建议]}}}
+\newcommand{\todo}[1]{\textcolor{red!70!black}{\footnotesize\textsf{#1}}}
+\newcommand{\pitfall}[1]{\begin{noticebox}[#1]}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+
+% ==========================================
+% 封面排版 (Cover Page)
+% ==========================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+    
+    % 双 Logo 居中展示
+    \begin{figure}[h]
+        \centering
+        \includegraphics[height=3.0cm]{../public-resource/ima/RobotWorkShop.jpg}
+        \hspace{1.5cm}
+        \includegraphics[height=3.0cm]{../public-resource/ima/BigHeroX.jpg}
+    \end{figure}
+    
+    \vspace{0.8cm}
+    {\Huge \textbf{\textcolor{blue!90!black}{RoboCup 人形机器人足球联赛 (HSL)}}}\\[0.4cm]
+    {\LARGE \textbf{新成员系统入门手册与技术工程图谱}}\\[0.5cm]
+    {\large \textsf{A Comprehensive Onboarding Handbook \& Engineering Roadmap for RoboCup HSL}}
+    
+    \vspace{1.2cm}
+    \rule{0.85\textwidth}{1.2pt}
+    \vspace{1.0cm}
+    
+    \begin{minipage}{0.75\textwidth}
+        \large
+        \textbf{编著者（Author）：} hongli\\[0.3cm]
+        \textbf{贡献者（Contributor）：} hanxu chen\\[0.3cm]
+        \textbf{官方邮箱（Email）：} \href{mailto:2868014836@qq.com}{2868014836@qq.com}\\[0.3cm]
+        \textbf{所属机构与战队：} 湖南大学 Robot 工作坊 · BigHeroX 战队\\[0.3cm]
+        \textbf{开源仓库：} \url{https://github.com/RobotWorkShop-BigHeroX/RoboCupBook}\\[0.3cm]
+        \textbf{手册版本：} \textsf{v1.2.0}\\[0.3cm]
+        \textbf{构建日期：} \today
+    \end{minipage}
+    
+    \vfill
+    
+    \begin{quotebox}
+        \centering
+        \small
+        \textit{“面向对 RoboCup 及人形机器人足球联赛完全不了解的新成员。\\
+        重点在建立清晰的技术知识框架、工程严谨思维与实验室安全底线。”}
+    \end{quotebox}
+    
+    \vspace{0.8cm}
+\end{titlepage}
+
+% ==========================================
+% 目录
+% ==========================================
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+\input{chapters/edited_tex_v1/01-robocup}
+\input{chapters/edited_tex_v1/02-teams}
+\input{chapters/edited_tex_v1/03-platform}
+\input{chapters/edited_tex_v1/04-learning}
+\input{chapters/edited_tex_v1/05-channels}
+\input{chapters/edited_tex_v1/06-safety}
+\input{chapters/edited_tex_v1/07-competition}
+\input{chapters/edited_tex_v1/08-appendix}
+
+\end{document}

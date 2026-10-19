@@ -1,0 +1,249 @@
+% ==========================================
+% 第 3 章：机器人平台
+% ==========================================
+\section{机器人平台：T4 与 Zvalley 生态}
+
+本章涉及的尺寸、重量、关节限位和电气参数应来自厂家手册或实测记录。暂时缺少的数据应明确标记为待补，不应根据其他平台的参数推测。
+
+\subsection{T4 平台参数与初步检查}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.6cm} p{3.6cm} X}
+\toprule
+\textbf{参数} & \textbf{去哪查} & \textbf{为什么你必须知道} \\
+\midrule
+身高、体重 & 厂家手册（私有子模块） & 检录的硬指标；重心高低决定步态参数 \\
+\addlinespace
+自由度与限位 & SDK 文档、实物 & 写逆运动学之前必须知道每个关节能转到哪 \\
+\addlinespace
+关节电机与减速比 & 厂家手册 & 决定扭矩上限；踢球和起身容易超限 \\
+\addlinespace
+计算平台 & 开机查 \texttt{uname -a}、\texttt{nvidia-smi} & 决定你能跑多大的模型、几个进程 \\
+\addlinespace
+传感器清单 & 手册 + 实物 & 决定定位方案（见 4.7），也决定检录能不能过 \\
+\addlinespace
+电池与续航 & 手册 + 实测 & 决定一场比赛要换几次电池、什么时候换 \\
+\bottomrule
+\end{tabularx}
+\caption{T4 参数与查阅途径。具体数值以厂家手册为准，本书不复述。}
+\end{table}
+
+\noindent\textbf{核对手册与实物。} 首次接手平台时，建议完成以下测量，并将结果保存到队内平台档案中：
+
+\begin{enumerate}[leftmargin=*]
+    \item 把机器人摆成标准零位，用卷尺量身高，用体重秤称整机。
+    \item 逐个关节手动转到限位，记录正负方向的最大角度。
+    \item 开机跑 \texttt{nvidia-smi} 和 \texttt{top}，记下空闲时的 CPU、内存、显存占用。
+    \item 满电跑一次标准步态，记下电压下降曲线和可用的连续时间。
+    \item 把上面四项写进一页纸，贴在工位。下一届直接接着用。
+\end{enumerate}
+
+\subsection{关节与自由度}
+
+双足人形机器人的每条腿通常有 6 个自由度：髋部 3 个（前后摆、侧摆和旋转）、膝部 1 个、踝部 2 个（前后和侧向）。这些关节共同决定腿部的支撑、摆动和落脚能力，具体配置仍应以实际平台为准。
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.4cm} p{3.4cm} X}
+\toprule
+\textbf{部位} & \textbf{典型自由度} & \textbf{坏了会怎样} \\
+\midrule
+髋（前后） & 1 & 迈不开步，步幅直接减半 \\
+髋（侧向） & 1 & 站不稳，重心移不过去 \\
+髋（旋转） & 1 & 转身别劲，踢球方向偏 \\
+膝 & 1 & 蹲不下去，起身动作做不出来 \\
+踝（前后） & 1 & 缓冲失效，容易前扑 \\
+踝（侧向） & 1 & 侧向抗扰差，被撞就倒 \\
+\bottomrule
+\end{tabularx}
+\caption{单腿各关节自由度的典型分工。具体数量与方向以实物为准。}
+\end{table}
+
+\begin{noticebox}[注意]
+关节零位由机械标定确定，编码器读数需要与标定结果保持一致。更换电机或编码器、发生较严重的跌倒，或发现关节位置异常后，应按厂家规定检查并重新标定。具体流程以平台手册为准。
+\end{noticebox}
+
+\subsection{IMU 与姿态估计}
+
+IMU（惯性测量单元）通常提供角速度、加速度以及由内部或外部算法估计的姿态信息：
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{三轴角速度}：转身、晃动有多快。
+    \item \textbf{三轴加速度}：重力方向在哪，有没有被撞。
+    \item \textbf{姿态角}：芯片内部解算好的横滚、俯仰、偏航。
+\end{itemize}
+
+在控制系统中，IMU 常用于姿态反馈和跌倒检测。姿态估计结果可以用于调整踝关节与髋关节的控制目标；当姿态超过设定范围时，保护逻辑可触发相应的安全动作。
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.6cm} X}
+\toprule
+\textbf{坑} & \textbf{现象与处理} \\
+\midrule
+零偏 & 静止时角速度不为零，积分几秒就漂出几度。上电后先静止采样几秒求均值，减掉再积分。 \\
+\addlinespace
+温漂 & 传感器温度变化时零偏可能发生变化。可在规定的预热条件下检查，必要时建立温度补偿模型。 \\
+\addlinespace
+振动 & 走路时加速度全是高频毛刺，姿态跟着抖。加低通滤波，截止频率从 30 Hz 往下试。 \\
+\addlinespace
+坐标系 & 芯片坐标系和机体坐标系不一定重合。装的时候记下朝向，代码里做一次固定旋转。 \\
+\bottomrule
+\end{tabularx}
+\caption{IMU 测量中常见的误差来源与处理方法。}
+\end{table}
+
+\subsection{足式里程计与误差来源}
+
+轮式机器人靠轮子转速算位移。人形没有轮子，只能靠腿：判断哪只脚在地上（支撑相），用正运动学把关节角度换算成脚的位置，再反推身体相对移动了多少。
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.8cm} X}
+\toprule
+\textbf{误差来源} & \textbf{怎么表现，怎么缓解} \\
+\midrule
+打滑 & 实际位移小于关节运动所估计的位移。可结合视觉标线或其他外部观测修正里程计误差。 \\
+\addlinespace
+足底柔性 & 脚掌受力形变，算出来的触地位置比实际偏。用触地传感器做校正。 \\
+\addlinespace
+关节零位误差 & 零位差一度，走十米就偏出几十厘米。定期标定。 \\
+\addlinespace
+时间不同步 & 图像和关节数据的采集时刻差几十毫秒，融合时对不上。统一时间戳。 \\
+\bottomrule
+\end{tabularx}
+\caption{足式里程计的常见误差来源及缓解方法。}
+\end{table}
+
+因此，足式里程计适合提供连续的短时相对运动估计，但误差会随时间累积；视觉观测可用于约束长期漂移。两者的融合方法见第 4.7 节。
+
+\subsection{机载软件结构与运行频率}
+
+机载软件通常由多个进程或节点组成。不同模块的实时性要求不同，因此通常需要分别设置运行频率：
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.4cm} p{1.8cm} p{4.4cm} X}
+\toprule
+\textbf{模块} & \textbf{典型频率} & \textbf{输入} & \textbf{输出} \\
+\midrule
+相机驱动 & 30--60 Hz & 图像 & 原始帧 \\
+视觉检测 & 15--30 Hz & 原始帧 & 球、球门、机器人的位置 \\
+定位 & 10--30 Hz & 视觉观测、里程计 & 自己在场地的位姿 \\
+决策 & 5--20 Hz & 定位、球、裁判状态 & 目标动作 \\
+运动控制 & 100--500 Hz & 目标动作、IMU & 关节指令 \\
+\bottomrule
+\end{tabularx}
+\caption{机载软件各模块的典型运行频率。实际值应通过平台测量与配置确认。}
+\end{table}
+
+\subsection{电气系统与通信接口}
+
+电源、总线和急停回路需要与软件接口一并检查。接线错误可能损坏驱动器或造成安全风险，因此电气操作应遵循平台手册和实验室流程。
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.4cm} p{4.6cm} X}
+\toprule
+\textbf{部分} & \textbf{它做什么} & \textbf{碰之前注意什么} \\
+\midrule
+动力母线 & 给关节电机供电，电压高、电流大 & 带电插拔会打火，接反直接烧驱动 \\
+\addlinespace
+逻辑电源 & 给工控机、传感器供电 & 和动力电分开走，避免电机启停把板子拉黑 \\
+\addlinespace
+CAN 总线 & 工控机和各关节通信 & 终端电阻要对，线太长会丢帧 \\
+\addlinespace
+以太网 & 相机、工控机、调试机互联 & 和裁判盒同网段，别接错交换机 \\
+\addlinespace
+急停回路 & 硬件切断动力 & 必须独立于软件，软件停止响应时它仍然有效 \\
+\bottomrule
+\end{tabularx}
+\caption{机器人主要电气与通信接口及操作注意事项。}
+\end{table}
+
+\noindent\textbf{接线与上电检查：}
+
+\begin{enumerate}[leftmargin=*]
+    \item 插拔任何线之前，先断动力电。带电插拔 CAN 线和电机线，是烧驱动板的常见原因。
+    \item 上电顺序固定：逻辑电先，自检通过，再上动力电。顺序反过来，工控机可能被浪涌损坏。
+    \item 电池不过放。电压掉到保护阈值以下，电池就废了；长期存放要充到一半。
+    \item 急停回路不接软件。它可以被软件触发，但断电的那条路径必须是硬的。
+    \item 改线后先用万用表检查通断和短路情况，确认接线无误后再上电。
+\end{enumerate}
+
+\begin{noticebox}[经验]
+排查驱动板故障时，应先核对最近一次接线和上电操作，再检查器件本身。故障原因需要通过测量和日志确认，不宜仅凭现象判断。\advice
+\end{noticebox}
+\subsection{队内平台与资料}
+
+队里的私有子模块（\texttt{Zvalley-resource-old/}）放着三类东西：厂家硬件手册、历年比赛录像与裁判盒日志、内部培训讲义。克隆要带子模块参数：
+
+\begin{verbatim}
+git clone --recurse-submodules <仓库地址>
+git submodule update --init --recursive
+\end{verbatim}
+
+\begin{noticebox}[权限]
+私有子模块只对授权队员开放。原理图、固件协议和内部参数等资料应从该模块或平台负责人处获取；如果现有资料无法确认某项配置，应先向负责人核实。
+\end{noticebox}
+
+\subsection{Zvalley 生态：五个入口}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{p{3.2cm} X}
+\toprule
+\textbf{入口} & \textbf{什么时候用} \\
+\midrule
+开放资料总站 & 找固件版本、接口说明、工具链更新 \\
+\addlinespace
+SDK 文档中心 & 查电机通信协议、总线读写、传感器驱动接口 \\
+\addlinespace
+SDK 仓库（GitHub） & 拿 C++ / Python 示例，先跑通一个关节再谈其他 \\
+\addlinespace
+Z01 仿真资产 & 要 URDF / MJCF / USD 模型，做仿真或在 Isaac 里验证 \\
+\addlinespace
+Zlab\_Gym 手册 & 想用强化学习训练步态，从这里起步（见 4.8） \\
+\bottomrule
+\end{tabularx}
+\caption{Zvalley 官方资料与开发工具入口。网址见附录 F 或队内书签。}
+\end{table}
+
+\noindent\textbf{SDK 的初步验证流程：}
+
+\begin{enumerate}[leftmargin=*]
+    \item 克隆 SDK 仓库，按 README 装依赖。
+    \item 跑官方示例，先只控制一个关节，确认能读能写。
+    \item 打印所有关节的位置反馈，和实物角度对一遍。
+    \item 写一个最小循环：读 IMU、读关节、发一个固定目标位置。
+    \item 加入超时处理、角度限幅和急停回调等保护，并在受控条件下验证。保护逻辑未经确认前，不应驱动真机关节。
+\end{enumerate}
+
+\subsection{本队公开资料索引}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.8cm} X p{2.6cm}}
+\toprule
+\textbf{材料} & \textbf{里面有什么} & \textbf{什么时候看} \\
+\midrule
+2025 TDP & 上一代方案：机械结构、视觉流程 & 想了解设计取舍 \\
+2026 TDP & 2026 赛季方案：7 对 7 的分布式决策与步态 & 接手前的第一份材料 \\
+展示视频 & 自主寻球、带球、射门、起身的完整流程 & 给新人建立直觉 \\
+Robots.pdf & 电机选型、连杆尺寸、重心 & 改机械之前 \\
+software.pdf & 软件架构、话题拓扑、状态转移 & 读代码之前 \\
+\bottomrule
+\end{tabularx}
+\caption{本队公开资料。全部放在 \texttt{public-resource/} 下。}
+\end{table}
+
+\newpage

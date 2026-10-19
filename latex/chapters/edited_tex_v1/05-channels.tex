@@ -1,0 +1,104 @@
+% ==========================================
+% 第 5 章：消息渠道
+% ==========================================
+\section{消息渠道}
+
+规则修订、赛程调整和报名通知可能分散在多个官方渠道。建议将以下入口加入队内资料库，并明确由谁定期检查。
+
+\subsection{优先关注的两个渠道}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{官方邮件列表。} 技术委员会和组委会可能通过邮件发布规则修订、资格通知和重要裁决。订阅后仍应留意当届官网的补充通知。\official
+    \begin{itemize}
+        \item 订阅地址：\url{https://lists.robocup.org/mm/lists/robocup-humanoid.lists.robocup.org/}
+        \item 建议使用队内公共邮箱订阅，便于成员交接，避免个人离队后通知无人接收。
+    \end{itemize}
+    \item \textbf{官方 Discord。} 这里可用于了解赛事讨论、现场网络问题和规则解释等信息。回复速度取决于具体问题与在线人员情况。\official
+    \begin{itemize}
+        \item 加入链接：\url{https://discord.gg/67qGN8ycwz}
+        \item 提问前先搜索历史消息，并附上相关日志、环境信息和复现步骤，以便其他队伍定位问题。
+    \end{itemize}
+\end{enumerate}
+
+\subsection{官方信息入口}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{4.6cm} X p{2.2cm}}
+\toprule
+\textbf{站点} & \textbf{上面有什么} & \textbf{多久看一次} \\
+\midrule
+hsl.robocup.org & 联赛主页：赛程、组别、技术挑战主题、入围名单 & 每月 \\
+\addlinespace
+202x.robocup.org & 当届主办方的现场信息：场馆、注册、网络、草皮 & 赛前每周 \\
+\addlinespace
+/information-for-new-teams & 新队指南：资格流程、TDP 规范、现场准备 & 报名前 \\
+\addlinespace
+/qualified-teams & 所有入围队伍的 TDP、视频、硬件配置 & 赛前必读 \\
+\addlinespace
+robotprogram.robocup.org & 官方机器人支持计划，样机与技术支持 & 想换平台时 \\
+\bottomrule
+\end{tabularx}
+\caption{官方信息与资源入口。}
+\end{table}
+
+\subsection{代码与工具仓库}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{3.8cm} X}
+\toprule
+\textbf{仓库} & \textbf{你会用到它的场景} \\
+\midrule
+HSL-Rules & 查规则原文；看某条规则的修订历史；确认某个限制是哪一年加上的 \\
+\addlinespace
+GameController & 本地联调裁判盒；对照源码确认数据包字段 \\
+\addlinespace
+RobotInspection & 赛前自检，提前知道哪些尺寸会被卡 \\
+\bottomrule
+\end{tabularx}
+\caption{常用官方仓库。核对规则时，应确认文件版本与最近的修订记录。}
+\end{table}
+
+\noindent 这三个仓库位于 \url{https://github.com/RoboCup-HumanoidSoccerLeague}。追踪规则变化时，应确认 PDF 与仓库源文件对应的版本，并查看相关提交记录。
+
+\subsection{一个赛季的节奏}
+
+具体日期每年都会调整。下表概括一个赛季中常见的准备阶段，可用于安排队内任务：\advice
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.6cm} X}
+\toprule
+\textbf{阶段} & \textbf{要做的事} \\
+\midrule
+赛后到冬训 & 复盘当年的问题，定下一年的技术路线；把代码整理到能交接 \\
+\addlinespace
+年初 & 关注报名与资格审查通知；准备 TDP \\
+\addlinespace
+春季 & 提交材料；按新规则改代码；机器人体检 \\
+\addlinespace
+赛前两月 & 整机联调；按比赛场景跑全流程；网络和裁判盒演练 \\
+\addlinespace
+比赛 & 现场调试；每天赛后复盘，当天改的东西当天记录 \\
+\bottomrule
+\end{tabularx}
+\caption{一个赛季中常见的准备阶段与对应任务。}
+\end{table}
+
+\subsection{队内信息维护流程}
+
+订阅本身不能保证重要通知得到处理。队内应明确维护责任，并安排固定的检查频率：
+
+\begin{itemize}[leftmargin=*]
+    \item 一人盯邮件列表，每周扫一次，规则相关的转进队群。
+    \item 一人盯 Discord 的规则与赛事频道，其余频道不用看。
+    \item 规则仓库每两周对一次 \texttt{git log}，有改动就记进变更表。
+\end{itemize}
+
+\noindent 每个赛季结束后，应保存当届规则版本及对应的 commit 哈希或 release 标签。这样在需要追溯条款变化时，可以定位到具体版本。\advice
+
+\newpage
