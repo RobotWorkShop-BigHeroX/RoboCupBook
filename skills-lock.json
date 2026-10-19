@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "chinese-web-typography": {
+      "source": "Skywt2003/chinese-web-typography",
+      "sourceType": "github",
+      "skillPath": "skills/chinese-web-typography/SKILL.md",
+      "computedHash": "3e8d6d7a68859d01f1bcec35e92953973858b645fd7e6060801957b4eb37c5d4"
+    }
+  }
+}

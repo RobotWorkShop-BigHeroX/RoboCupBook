@@ -7,50 +7,78 @@
   <meta name="description" content="面向 RoboCup 及人形机器人足球联赛 (HSL) 零基础新成员的权威入门指引与知识工程体系 - 湖南大学 Robot 工作坊 BigHeroX 战队">
   <link rel="icon" type="image/jpeg" href="public-resource/ima/BigHeroX.jpg">
 
-  <!-- 字体资源 -->
+  <!-- 字体资源: Plus Jakarta Sans (西文标题) + Fira Code (代码) + Noto Sans SC (中文屏显正文) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- 核心库: 代码高亮、Markdown 解析、Mermaid 矢量图表渲染 -->
+  <!-- 核心库: 代码高亮、Markdown 解析、Mermaid 矢量图表渲染、中西文排版 pangu.js -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script src="vendor/pangu.umd.js"></script>
 
   <style>
     :root {
-      --bg-canvas: #F8F9FA;
+      --bg-canvas: #FAFAFC;
       --bg-surface: #FFFFFF;
-      --bg-muted: #F1F3F5;
-      --bg-glass: rgba(248, 249, 250, 0.94);
-      --text-primary: #1A1D20;
-      --text-secondary: #4A5568;
-      --text-muted: #718096;
-      --accent-indigo: #1E3A8A;
+      --bg-muted: #F3F4F6;
+      --bg-elevated: #FFFFFF;
+      --bg-glass: rgba(250, 250, 252, 0.92);
+      
+      --text-primary: #111827;
+      --text-secondary: #374151;
+      --text-muted: #6B7280;
+      
       --accent-cobalt: #2563EB;
+      --accent-indigo: #1E40AF;
       --accent-cyan: #0284C7;
-      --border-hairline: rgba(0, 0, 0, 0.08);
-      --border-strong: rgba(0, 0, 0, 0.16);
-      --code-bg: #1A202C;
-      --header-height: 52px;
+      --accent-emerald: #059669;
+      --accent-amber: #D97706;
+      --accent-rose: #E11D48;
+      --accent-violet: #7C3AED;
+      
+      --border-hairline: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.16);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 12px 32px -4px rgba(15, 23, 42, 0.12);
+      
+      --code-bg: #0D1117;
+      --header-height: 54px;
       --canvas-max-width: 760px;
+      
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      --font-mono: 'Fira Code', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
     [data-theme="dark"] {
-      --bg-canvas: #0D1117;
-      --bg-surface: #161B22;
-      --bg-muted: #21262D;
-      --bg-glass: rgba(13, 17, 23, 0.92);
-      --text-primary: #F0F6FC;
-      --text-secondary: #C9D1D9;
-      --text-muted: #8B949E;
-      --accent-indigo: #38BDF8;
-      --accent-cobalt: #60A5FA;
+      --bg-canvas: #0B0F17;
+      --bg-surface: #111827;
+      --bg-muted: #1E293B;
+      --bg-elevated: #161F30;
+      --bg-glass: rgba(11, 15, 23, 0.90);
+      
+      --text-primary: #F9FAFB;
+      --text-secondary: #E2E8F0;
+      --text-muted: #94A3B8;
+      
+      --accent-cobalt: #3B82F6;
+      --accent-indigo: #60A5FA;
       --accent-cyan: #38BDF8;
-      --border-hairline: rgba(255, 255, 255, 0.10);
-      --border-strong: rgba(255, 255, 255, 0.20);
-      --code-bg: #121820;
+      --accent-emerald: #10B981;
+      --accent-amber: #F59E0B;
+      --accent-rose: #F43F5E;
+      --accent-violet: #A78BFA;
+      
+      --border-hairline: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 16px 40px -4px rgba(0, 0, 0, 0.65);
+      
+      --code-bg: #070A0F;
     }
 
     * {
@@ -59,13 +87,21 @@
       padding: 0;
     }
 
+    /* 专著级排版基础规范 */
     body {
-      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--font-sans);
       background-color: var(--bg-canvas);
       color: var(--text-primary);
-      line-height: 1.82;
+      line-height: 1.85;
       font-size: 16.5px;
+      letter-spacing: 0.005em;
+      text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      hanging-punctuation: first last;
+      text-autospace: no-autospace; /* 由 pangu.js 显式接管空格，避免多重冲突 */
+      word-break: normal;
+      overflow-wrap: break-word;
       transition: background-color 0.2s ease, color 0.2s ease;
       overflow-x: hidden;
     }
@@ -76,13 +112,13 @@
       top: 0;
       left: 0;
       height: 2.5px;
-      background: var(--accent-cobalt);
+      background: linear-gradient(90deg, var(--accent-cobalt), var(--accent-cyan));
       width: 0%;
       z-index: 1100;
       transition: width 0.08s ease-out;
     }
 
-    /* 顶部极简控制栏 */
+    /* 顶部控制栏 */
     .app-bar {
       position: fixed;
       top: 0;
@@ -90,8 +126,8 @@
       right: 0;
       height: var(--header-height);
       background: var(--bg-glass);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
       border-bottom: 1px solid var(--border-hairline);
       display: flex;
       align-items: center;
@@ -110,14 +146,14 @@
       background: transparent;
       border: 1px solid var(--border-hairline);
       color: var(--text-secondary);
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
+      width: 34px;
+      height: 34px;
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.16s ease;
     }
 
     .menu-trigger:hover {
@@ -129,31 +165,38 @@
     .brand-title-link {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
       text-decoration: none;
       color: inherit;
     }
 
     .brand-logo-img {
-      width: 26px;
-      height: 26px;
-      border-radius: 4px;
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
       object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     }
 
     .brand-heading {
-      font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
       font-weight: 700;
-      font-size: 0.96rem;
-      letter-spacing: -0.01em;
+      font-size: 0.98rem;
+      letter-spacing: -0.015em;
       color: var(--text-primary);
+      text-wrap: balance;
     }
 
     .brand-sub {
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
-      margin-left: 6px;
+      margin-left: 8px;
       font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border-hairline);
+      display: inline-flex;
+      align-items: center;
     }
 
     .app-actions {
@@ -162,7 +205,7 @@
       gap: 10px;
     }
 
-    /* 极简检索框 */
+    /* 检索框与快捷键指示 */
     .search-box-wrap {
       position: relative;
     }
@@ -177,52 +220,75 @@
       background: var(--bg-muted);
       border: 1px solid var(--border-hairline);
       color: var(--text-primary);
-      padding: 5px 12px 5px 30px;
-      border-radius: 6px;
+      padding: 6px 42px 6px 32px;
+      border-radius: 7px;
       font-size: 0.82rem;
+      font-family: inherit;
       outline: none;
-      width: 190px;
-      transition: all 0.2s ease;
+      width: 195px;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .search-input-box input:focus {
       border-color: var(--accent-cobalt);
       background: var(--bg-surface);
-      width: 250px;
+      width: 260px;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
     .search-svg-icon {
       position: absolute;
-      left: 9px;
+      left: 10px;
       width: 14px;
       height: 14px;
       fill: var(--text-muted);
       pointer-events: none;
     }
 
+    .search-kbd-badge {
+      position: absolute;
+      right: 8px;
+      padding: 1px 5px;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      pointer-events: none;
+      line-height: 1.3;
+    }
+
     .search-panel {
       position: absolute;
       top: calc(100% + 8px);
       right: 0;
-      width: 360px;
-      max-height: 400px;
+      width: 380px;
+      max-height: 420px;
       overflow-y: auto;
       background: var(--bg-surface);
       border: 1px solid var(--border-hairline);
-      border-radius: 8px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
-      padding: 6px;
+      border-radius: 9px;
+      box-shadow: var(--shadow-lg);
+      padding: 8px;
       display: none;
       z-index: 1000;
     }
 
     .search-panel.open {
       display: block;
+      animation: modalFadeIn 0.15s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .search-item {
-      padding: 8px 10px;
-      border-radius: 4px;
+      padding: 9px 12px;
+      border-radius: 6px;
       cursor: pointer;
       border-bottom: 1px solid var(--border-hairline);
       transition: background 0.12s ease;
@@ -238,7 +304,7 @@
     }
 
     .search-item.selected-nav {
-      outline: 1px solid var(--accent-cobalt);
+      outline: 1.5px solid var(--accent-cobalt);
     }
 
     .search-item-chapter {
@@ -246,19 +312,21 @@
       color: var(--accent-cyan);
       font-weight: 600;
       margin-bottom: 2px;
+      letter-spacing: 0.02em;
     }
 
     .search-item-title {
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       font-weight: 600;
       color: var(--text-primary);
-      margin-bottom: 3px;
+      margin-bottom: 4px;
+      text-wrap: balance;
     }
 
     .search-item-snippet {
       font-size: 0.76rem;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.45;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -266,7 +334,7 @@
     }
 
     .search-match-mark {
-      background: rgba(37, 99, 235, 0.18);
+      background: rgba(37, 99, 235, 0.16);
       color: var(--accent-cobalt);
       font-weight: 600;
       padding: 0 2px;
@@ -278,12 +346,12 @@
       border: 1px solid var(--border-hairline);
       color: var(--text-secondary);
       font-size: 0.80rem;
-      font-weight: 500;
-      padding: 5px 10px;
-      border-radius: 6px;
+      font-weight: 600;
+      padding: 6px 11px;
+      border-radius: 7px;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       cursor: pointer;
       text-decoration: none;
       transition: all 0.15s ease;
@@ -299,10 +367,12 @@
       color: white;
       background: var(--accent-cobalt);
       border-color: var(--accent-cobalt);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
     }
 
     .action-btn.primary:hover {
       opacity: 0.92;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
     }
 
     /* 遮罩层与章节抽屉 */
@@ -313,7 +383,7 @@
       right: 0;
       bottom: 0;
       background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(3px);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.22s ease;
@@ -330,7 +400,7 @@
       top: 0;
       bottom: 0;
       left: 0;
-      width: 310px;
+      width: 320px;
       background: var(--bg-surface);
       border-right: 1px solid var(--border-hairline);
       transform: translateX(-100%);
@@ -339,7 +409,7 @@
       display: flex;
       flex-direction: column;
       padding: 24px 18px;
-      box-shadow: 6px 0 28px rgba(0, 0, 0, 0.18);
+      box-shadow: var(--shadow-lg);
     }
 
     .drawer-nav.open {
@@ -351,7 +421,7 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
-      padding-bottom: 12px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--border-hairline);
     }
 
@@ -361,6 +431,7 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
+      text-wrap: balance;
     }
 
     .drawer-close {
@@ -368,12 +439,20 @@
       border: none;
       color: var(--text-muted);
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       line-height: 1;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: all 0.12s ease;
     }
 
     .drawer-close:hover {
       color: var(--text-primary);
+      background: var(--bg-muted);
     }
 
     .drawer-list {
@@ -382,20 +461,22 @@
       gap: 4px;
       overflow-y: auto;
       flex: 1;
+      padding-right: 2px;
     }
 
     .drawer-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      border-radius: 6px;
+      gap: 11px;
+      padding: 10px 12px;
+      border-radius: 7px;
       text-decoration: none;
       color: var(--text-secondary);
       font-size: 0.88rem;
       font-weight: 500;
       transition: all 0.15s ease;
       cursor: pointer;
+      text-wrap: balance;
     }
 
     .drawer-item:hover {
@@ -411,15 +492,17 @@
 
     .drawer-num {
       display: inline-block;
-      width: 22px;
-      height: 22px;
-      line-height: 22px;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
       text-align: center;
-      border-radius: 4px;
+      border-radius: 5px;
       background: var(--bg-muted);
       font-size: 0.72rem;
       font-weight: 700;
       color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
     }
 
     .drawer-item.active .drawer-num {
@@ -431,9 +514,9 @@
       padding-top: 14px;
       margin-top: auto;
       border-top: 1px solid var(--border-hairline);
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     /* 专著版心结构 */
@@ -442,7 +525,7 @@
       min-height: calc(100vh - var(--header-height));
       display: flex;
       justify-content: center;
-      padding: 48px 24px 80px 24px;
+      padding: 48px 24px 88px 24px;
       position: relative;
     }
 
@@ -452,82 +535,126 @@
       min-width: 0;
     }
 
-    /* 正文样式 */
+    /* 章节元信息头标 */
+    .monograph-header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--accent-cobalt);
+      background: rgba(37, 99, 235, 0.08);
+      padding: 3px 10px;
+      border-radius: 9999px;
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+    }
+
+    .monograph-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-hairline);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 正文专著排版规范 */
     .monograph-body h1 {
-      font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
       font-size: 2.15rem;
       font-weight: 700;
-      line-height: 1.25;
+      line-height: 1.30;
       color: var(--text-primary);
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 1.5px solid var(--border-hairline);
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+      text-wrap: balance;
     }
 
     .monograph-body h2 {
-      font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
       font-size: 1.45rem;
-      font-weight: 600;
-      line-height: 1.35;
+      font-weight: 700;
+      line-height: 1.38;
       color: var(--text-primary);
-      margin-top: 42px;
+      letter-spacing: -0.015em;
+      margin-top: 48px;
       margin-bottom: 16px;
-      scroll-margin-top: calc(var(--header-height) + 20px);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border-hairline);
+      scroll-margin-top: calc(var(--header-height) + 24px);
+      text-wrap: balance;
     }
 
     .monograph-body h3 {
-      font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
-      font-size: 1.15rem;
+      font-size: 1.18rem;
       font-weight: 600;
       line-height: 1.45;
       color: var(--text-primary);
-      margin-top: 28px;
-      margin-bottom: 12px;
-      scroll-margin-top: calc(var(--header-height) + 20px);
+      letter-spacing: -0.01em;
+      margin-top: 32px;
+      margin-bottom: 14px;
+      scroll-margin-top: calc(var(--header-height) + 24px);
+      text-wrap: balance;
+    }
+
+    .monograph-body h4 {
+      font-size: 1.02rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text-primary);
+      margin-top: 24px;
+      margin-bottom: 10px;
+      text-wrap: balance;
     }
 
     .monograph-body p {
-      margin-bottom: 1.25em;
+      margin-bottom: 1.35em;
       color: var(--text-primary);
+      text-wrap: pretty; /* 消除末行单字挤出（孤字孤行） */
     }
 
     .monograph-body a {
       color: var(--accent-cobalt);
       text-decoration: none;
-      border-bottom: 1px solid rgba(37, 99, 235, 0.25);
-      transition: border-color 0.15s ease;
+      border-bottom: 1px solid rgba(37, 99, 235, 0.28);
+      transition: all 0.15s ease;
+      padding-bottom: 1px;
     }
 
     .monograph-body a:hover {
       border-bottom-color: var(--accent-cobalt);
+      background: rgba(37, 99, 235, 0.05);
     }
 
     .monograph-body ul,
     .monograph-body ol {
-      margin-bottom: 1.3em;
-      padding-left: 24px;
+      margin-bottom: 1.35em;
+      padding-left: 26px;
       color: var(--text-primary);
     }
 
     .monograph-body li {
-      margin-bottom: 0.45em;
+      margin-bottom: 0.50em;
+      text-wrap: pretty;
     }
 
     .monograph-body hr {
       border: none;
       height: 1px;
       background: var(--border-hairline);
-      margin: 36px 0;
+      margin: 40px 0;
     }
 
-    /* 内嵌本章要目盒 */
+    /* 内嵌本章要目盒 (Chapter Contents) */
     .chapter-contents-box {
-      margin: 20px 0 36px 0;
-      padding: 16px 20px;
+      margin: 22px 0 38px 0;
+      padding: 18px 22px;
       background: var(--bg-surface);
       border: 1px solid var(--border-hairline);
-      border-radius: 6px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
     }
 
     .chapter-contents-header {
@@ -536,7 +663,19 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chapter-contents-header::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 2px;
+      background: var(--accent-cobalt);
     }
 
     .chapter-contents-grid {
@@ -545,7 +684,7 @@
       padding: 0;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 6px 16px;
+      gap: 8px 18px;
     }
 
     .chapter-contents-grid li a {
@@ -554,118 +693,150 @@
       font-size: 0.86rem;
       border-bottom: none;
       transition: color 0.15s ease;
-      display: inline-block;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
       line-height: 1.45;
+      text-wrap: balance;
     }
 
     .chapter-contents-grid li a:hover {
       color: var(--accent-cobalt);
     }
 
-    /* 学术三线表 */
+    /* 学术三线表 (Booktabs) 排版 */
+    .table-responsive-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin: 30px 0;
+      border-radius: 4px;
+    }
+
     .monograph-body table {
       width: 100%;
       border-collapse: collapse;
-      margin: 28px 0;
       font-size: 0.90rem;
-      border-top: 1.8px solid var(--text-primary);
-      border-bottom: 1.8px solid var(--text-primary);
+      border-top: 2px solid var(--text-primary);
+      border-bottom: 2px solid var(--text-primary);
+      font-variant-numeric: tabular-nums;
     }
 
     .monograph-body th {
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-primary);
-      padding: 10px 14px;
+      padding: 11px 16px;
       text-align: left;
-      border-bottom: 1px solid var(--text-primary);
+      border-bottom: 1.2px solid var(--text-primary);
+      letter-spacing: 0.01em;
+      text-wrap: balance;
     }
 
     .monograph-body td {
-      padding: 10px 14px;
+      padding: 11px 16px;
       color: var(--text-secondary);
       border: none;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     .monograph-body tr:hover td {
       background: var(--bg-muted);
     }
 
-    /* 专著插箱 */
+    /* 专著插箱 (Callout Box) 体系 */
     .callout-box {
-      margin: 24px 0;
-      padding: 14px 18px;
-      border-left: 3px solid var(--accent-cobalt);
+      margin: 26px 0;
+      padding: 16px 20px;
+      border-left: 3.5px solid var(--accent-cobalt);
       background: rgba(37, 99, 235, 0.04);
-      border-radius: 0 4px 4px 0;
+      border-radius: 0 8px 8px 0;
       font-size: 0.93rem;
-      line-height: 1.7;
+      line-height: 1.75;
+      text-wrap: pretty;
     }
 
     .callout-box.alert-note {
-      border-left-color: #2563EB;
+      border-left-color: var(--accent-cobalt);
       background: rgba(37, 99, 235, 0.04);
     }
 
     .callout-box.alert-tip {
-      border-left-color: #10B981;
-      background: rgba(16, 185, 129, 0.04);
+      border-left-color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.05);
     }
 
     .callout-box.alert-important {
-      border-left-color: #8B5CF6;
-      background: rgba(139, 92, 246, 0.04);
+      border-left-color: var(--accent-violet);
+      background: rgba(139, 92, 246, 0.05);
     }
 
     .callout-box.alert-warning {
-      border-left-color: #F59E0B;
-      background: rgba(245, 158, 11, 0.04);
+      border-left-color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.05);
     }
 
     .callout-box.alert-caution {
-      border-left-color: #EF4444;
-      background: rgba(239, 68, 68, 0.04);
+      border-left-color: var(--accent-rose);
+      background: rgba(239, 68, 68, 0.05);
     }
 
-    .callout-box strong {
-      display: block;
-      margin-bottom: 4px;
+    .callout-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-weight: 700;
       font-size: 0.88rem;
       color: var(--text-primary);
     }
 
-    /* 代码块与复制动作 */
+    /* 代码块与高亮 */
     .code-wrap {
       position: relative;
-      margin: 24px 0;
+      margin: 26px 0;
       background: var(--code-bg);
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid var(--border-hairline);
       overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .code-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.70rem;
+      font-family: var(--font-mono);
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
     .code-wrap pre {
       margin: 0;
       padding: 16px;
       overflow-x: auto;
-      font-family: 'Fira Code', monospace;
+      font-family: var(--font-mono);
       font-size: 0.86rem;
-      line-height: 1.65;
+      line-height: 1.68;
     }
 
     .copy-action-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.10);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #e2e8f0;
-      font-size: 0.72rem;
+      color: #E2E8F0;
+      font-size: 0.70rem;
+      font-family: inherit;
       padding: 3px 8px;
       border-radius: 4px;
       cursor: pointer;
-      opacity: 0.45;
+      opacity: 0.65;
       transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .code-wrap:hover .copy-action-btn {
@@ -679,28 +850,30 @@
     }
 
     .monograph-body code:not(pre code) {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.88em;
+      font-family: var(--font-mono);
+      font-size: 0.86em;
       background: var(--bg-muted);
       color: var(--accent-cobalt);
       padding: 2px 6px;
       border-radius: 4px;
       border: 1px solid var(--border-hairline);
+      font-variant-numeric: tabular-nums;
     }
 
     /* Mermaid 矢量图表展示 */
     .diagram-wrap {
-      margin: 28px 0;
+      margin: 30px 0;
       text-align: center;
       background: var(--bg-surface);
       border: 1px solid var(--border-hairline);
-      border-radius: 6px;
-      padding: 20px;
+      border-radius: 8px;
+      padding: 24px;
       overflow-x: auto;
+      box-shadow: var(--shadow-sm);
     }
 
     .diagram-caption {
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 0.76rem;
       color: var(--text-muted);
       font-style: italic;
@@ -710,8 +883,8 @@
     .monograph-pager {
       display: flex;
       justify-content: space-between;
-      margin-top: 56px;
-      padding-top: 24px;
+      margin-top: 64px;
+      padding-top: 28px;
       border-top: 1px solid var(--border-hairline);
       gap: 16px;
     }
@@ -719,20 +892,23 @@
     .pager-card {
       display: flex;
       flex-direction: column;
-      padding: 12px 16px;
-      border-radius: 6px;
+      padding: 14px 18px;
+      border-radius: 8px;
       border: 1px solid var(--border-hairline);
       background: var(--bg-surface);
       text-decoration: none;
       color: inherit;
-      min-width: 180px;
-      transition: all 0.15s ease;
+      min-width: 200px;
+      transition: all 0.18s ease;
       cursor: pointer;
+      box-shadow: var(--shadow-sm);
     }
 
     .pager-card:hover {
       border-color: var(--accent-cobalt);
       background: var(--bg-muted);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
 
     .pager-dir {
@@ -743,20 +919,21 @@
     }
 
     .pager-name {
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 0.90rem;
+      font-weight: 700;
       color: var(--text-primary);
+      text-wrap: balance;
     }
 
-    /* 右侧极细小节索引轴 */
+    /* 右侧极细小节索引轴 (Margin Spine) */
     .margin-spine {
       position: fixed;
       top: calc(var(--header-height) + 40px);
-      left: calc(50% + (var(--canvas-max-width) / 2) + 36px);
-      width: 170px;
+      left: calc(50% + (var(--canvas-max-width) / 2) + 38px);
+      width: 180px;
       max-height: calc(100vh - var(--header-height) - 70px);
       overflow-y: auto;
-      padding-left: 12px;
+      padding-left: 14px;
       border-left: 1px solid var(--border-hairline);
       font-size: 0.76rem;
       z-index: 50;
@@ -768,21 +945,21 @@
       letter-spacing: 0.08em;
       color: var(--text-muted);
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .spine-item {
       display: block;
       color: var(--text-muted);
       text-decoration: none;
-      padding: 3px 0 3px 4px;
-      line-height: 1.4;
+      padding: 3px 0 3px 6px;
+      line-height: 1.45;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       border-left: 2px solid transparent;
-      margin-left: -13px;
-      transition: all 0.12s ease;
+      margin-left: -15px;
+      transition: all 0.14s ease;
     }
 
     .spine-item:hover {
@@ -795,7 +972,7 @@
       font-weight: 600;
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1220px) {
       .margin-spine {
         display: none;
       }
@@ -803,19 +980,23 @@
 
     @media (max-width: 768px) {
       .monograph-container {
-        padding: 24px 16px 60px 16px;
+        padding: 24px 16px 64px 16px;
       }
       .brand-sub {
         display: none;
       }
+      .search-kbd-badge {
+        display: none;
+      }
       .search-input-box input {
-        width: 130px;
+        width: 140px;
+        padding-right: 12px;
       }
       .search-input-box input:focus {
-        width: 170px;
+        width: 180px;
       }
       .search-panel {
-        width: 290px;
+        width: 300px;
       }
       .monograph-pager {
         flex-direction: column;
@@ -823,11 +1004,11 @@
     }
   </style>
 </head>
-<body>
+<body class="managed-spacing">
 
   <div id="progress-bar"></div>
 
-  <!-- 顶部极简控制栏 -->
+  <!-- 顶部控制栏 -->
   <header class="app-bar" id="app-bar">
     <div class="brand-section">
       <button class="menu-trigger" id="menu-btn" title="查看章节导航" aria-label="展开章节目录">
@@ -848,6 +1029,7 @@
         <div class="search-input-box">
           <svg class="search-svg-icon" viewBox="0 0 24 24"><path d="M21.71 20.29l-5.4-5.4A8.93 8.93 0 0 0 18 10a9 9 0 1 0-9 9 8.93 8.93 0 0 0 4.89-1.31l5.4 5.4a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.4zM4 10a6 6 0 1 1 6 6 6 6 0 0 1-6-6z"/></svg>
           <input type="text" id="search-input" placeholder="检索专著内容..." autocomplete="off">
+          <span class="search-kbd-badge">Ctrl K</span>
         </div>
         <div class="search-panel" id="search-panel"></div>
       </div>
@@ -922,15 +1104,19 @@
     </div>
 
     <div class="drawer-footer">
-      <div>编著者: hongli (2868014836@qq.com)</div>
-      <div>贡献者: hanxu chen</div>
-      <div>Robot工作坊 · BigHeroX 战队</div>
+      <div>编著者：hongli (2868014836@qq.com)</div>
+      <div>贡献者：hanxu chen</div>
+      <div>湖南大学 Robot 工作坊 · BigHeroX 战队</div>
     </div>
   </aside>
 
   <!-- 专著主阅读容器 -->
   <div class="monograph-container">
     <main class="monograph-canvas" id="monograph-canvas">
+      <!-- 动态章节头标区域 -->
+      <div id="article-header-meta"></div>
+
+      <!-- 正文内容区 -->
       <article class="monograph-body" id="article-content">
         <div style="text-align: center; padding: 60px 0; color: var(--text-muted);">
           加载专著内容中...
@@ -961,16 +1147,16 @@
   <script>
     // 章节路由列表
     const chapters = [
-      { id: 'readme', doc: 'README.md', title: '手册概览与说明' },
-      { id: '01-robocup', doc: 'docs/01-robocup.md', title: '1 RoboCup 与 HSL' },
-      { id: '02-teams', doc: 'docs/02-teams.md', title: '2 强队与开源资产' },
-      { id: '03-platform', doc: 'docs/03-platform.md', title: '3 机器人平台：T4 与 Zvalley 生态' },
-      { id: '04-learning', doc: 'docs/04-learning.md', title: '4 学习路线与开发基础' },
-      { id: '05-channels', doc: 'docs/05-channels.md', title: '5 消息渠道' },
-      { id: '06-safety', doc: 'docs/06-safety.md', title: '6 实验室安全守则' },
-      { id: '07-competition', doc: 'docs/07-competition.md', title: '7 第一次参赛：从报名到上场' },
-      { id: 'teams-list', doc: 'docs/teams-list.md', title: '全球参赛队伍汇总档案' },
-      { id: '08-appendix', doc: 'docs/08-appendix.md', title: '附录：参考手册与速查' }
+      { id: 'readme', doc: 'README.md', title: '手册概览与说明', tag: '导读与规范' },
+      { id: '01-robocup', doc: 'docs/01-robocup.md', title: '1 RoboCup 与 HSL', tag: '第 01 章 · 赛事体系' },
+      { id: '02-teams', doc: 'docs/02-teams.md', title: '2 强队与开源资产', tag: '第 02 章 · 国际格局' },
+      { id: '03-platform', doc: 'docs/03-platform.md', title: '3 机器人平台：T4 与 Zvalley 生态', tag: '第 03 章 · 硬件生态' },
+      { id: '04-learning', doc: 'docs/04-learning.md', title: '4 学习路线与开发基础', tag: '第 04 章 · 算法工程' },
+      { id: '05-channels', doc: 'docs/05-channels.md', title: '5 消息渠道', tag: '第 05 章 · 社区脉络' },
+      { id: '06-safety', doc: 'docs/06-safety.md', title: '6 实验室安全守则', tag: '第 06 章 · 安全基线' },
+      { id: '07-competition', doc: 'docs/07-competition.md', title: '7 第一次参赛：从报名到上场', tag: '第 07 章 · 实战备赛' },
+      { id: 'teams-list', doc: 'docs/teams-list.md', title: '全球参赛队伍汇总档案', tag: '全量参考档案' },
+      { id: '08-appendix', doc: 'docs/08-appendix.md', title: '附录：参考手册与速查', tag: '工程速查附录' }
     ];
 
     let currentDocIndex = 0;
@@ -979,6 +1165,31 @@
     let pendingHeadingTarget = null;
     let currentSearchResults = [];
     let selectedResultIndex = -1;
+
+    // 安全中西文盘古排版格式化工具
+    function formatTypographyText(text) {
+      if (!text) return '';
+      if (window.pangu && typeof window.pangu.spaceText === 'function') {
+        return window.pangu.spaceText(text);
+      }
+      return text;
+    }
+
+    function applyDomTypography(container) {
+      if (!container) return;
+      if (window.pangu && typeof window.pangu.spaceNode === 'function') {
+        try {
+          window.pangu.spaceNode(container);
+        } catch (e) {
+          console.warn('Pangu spaceNode execution notice:', e);
+        }
+      }
+    }
+
+    // 格式化抽屉导航与静态文案
+    document.querySelectorAll('.drawer-item span:last-child').forEach(el => {
+      el.textContent = formatTypographyText(el.textContent);
+    });
 
     // 读取持久化主题配置
     const savedTheme = localStorage.getItem('robocupbook-theme');
@@ -1007,7 +1218,7 @@
         startOnLoad: false,
         theme: isDark ? 'dark' : 'neutral',
         securityLevel: 'loose',
-        fontFamily: "'Plus Jakarta Sans', 'Noto Sans SC', sans-serif"
+        fontFamily: "var(--font-sans)"
       });
     }
     initMermaid();
@@ -1020,14 +1231,25 @@
         code = code.text;
       }
       if (lang === 'mermaid') {
-        return `<div class="diagram-wrap"><div class="mermaid">${code}</div><div class="diagram-caption">图示：架构与流程说明</div></div>`;
+        return `<div class="diagram-wrap no-pangu-spacing"><div class="mermaid">${code}</div><div class="diagram-caption">图示：系统架构与流程图解</div></div>`;
       }
       const validLang = (lang && hljs.getLanguage(lang)) ? lang : 'plaintext';
       const highlighted = hljs.highlight(code || '', { language: validLang }).value;
-      return `<div class="code-wrap">
-        <button class="copy-action-btn" onclick="copyCode(this)">复制</button>
+      const langLabel = validLang.toUpperCase();
+      return `<div class="code-wrap no-pangu-spacing">
+        <div class="code-header-bar">
+          <span>${langLabel}</span>
+          <button class="copy-action-btn no-pangu-spacing" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>复制</span>
+          </button>
+        </div>
         <pre><code class="hljs ${validLang}">${highlighted}</code></pre>
       </div>`;
+    };
+
+    renderer.table = function(header, body) {
+      return `<div class="table-responsive-wrapper"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
     };
 
     marked.setOptions({
@@ -1039,11 +1261,11 @@
     // 转换专著插箱语法 (> [!NOTE] 等)
     function transformAlerts(html) {
       return html
-        .replace(/<blockquote>\s*<p>\s*\[!NOTE\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-note"><strong>说明 (Note)</strong><p>$1</div>')
-        .replace(/<blockquote>\s*<p>\s*\[!TIP\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-tip"><strong>提示 (Tip)</strong><p>$1</div>')
-        .replace(/<blockquote>\s*<p>\s*\[!IMPORTANT\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-important"><strong>重点 (Important)</strong><p>$1</div>')
-        .replace(/<blockquote>\s*<p>\s*\[!WARNING\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-warning"><strong>警告 (Warning)</strong><p>$1</div>')
-        .replace(/<blockquote>\s*<p>\s*\[!CAUTION\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-caution"><strong>危险 (Caution)</strong><p>$1</div>');
+        .replace(/<blockquote>\s*<p>\s*\[!NOTE\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-note"><div class="callout-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> 说明 (Note)</div><p>$1</div>')
+        .replace(/<blockquote>\s*<p>\s*\[!TIP\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-tip"><div class="callout-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg> 提示 (Tip)</div><p>$1</div>')
+        .replace(/<blockquote>\s*<p>\s*\[!IMPORTANT\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-important"><div class="callout-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> 重点 (Important)</div><p>$1</div>')
+        .replace(/<blockquote>\s*<p>\s*\[!WARNING\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-warning"><div class="callout-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> 警告 (Warning)</div><p>$1</div>')
+        .replace(/<blockquote>\s*<p>\s*\[!CAUTION\]([\s\S]*?)<\/blockquote>/gi, '<div class="callout-box alert-caution"><div class="callout-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> 危险 (Caution)</div><p>$1</div>');
     }
 
     // 代码复制动作
@@ -1051,8 +1273,9 @@
       const codeBlock = button.closest('.code-wrap').querySelector('code');
       const text = codeBlock.innerText;
       navigator.clipboard.writeText(text).then(() => {
-        button.innerText = '已复制 ✓';
-        setTimeout(() => { button.innerText = '复制'; }, 2000);
+        const span = button.querySelector('span');
+        if (span) span.innerText = '已复制 ✓';
+        setTimeout(() => { if (span) span.innerText = '复制'; }, 2000);
       });
     };
 
@@ -1077,6 +1300,7 @@
       currentDocIndex = index;
       const target = chapters[index];
       const contentEl = document.getElementById('article-content');
+      const metaContainer = document.getElementById('article-header-meta');
 
       // 更新抽屉活跃高亮
       document.querySelectorAll('.drawer-item').forEach((el, idx) => {
@@ -1097,6 +1321,21 @@
         }
       }
 
+      // 统计字数与估算阅读耗时
+      const characterCount = markdownText.replace(/\s+/g, '').length;
+      const estimatedMinutes = Math.max(1, Math.ceil(characterCount / 380));
+
+      metaContainer.innerHTML = `
+        <div class="monograph-header-badge">${target.tag}</div>
+        <div class="monograph-meta-row">
+          <span>预计阅读时间：约 ${estimatedMinutes} 分钟</span>
+          <span>·</span>
+          <span>全文容量：${characterCount.toLocaleString()} 字</span>
+          <span>·</span>
+          <span>湖南大学 Robot 工作坊 · BigHeroX 战队</span>
+        </div>
+      `;
+
       // 渲染 Markdown
       const rawHtml = marked.parse(markdownText);
       contentEl.innerHTML = transformAlerts(rawHtml);
@@ -1110,6 +1349,9 @@
           console.error("Mermaid 渲染错误:", mErr);
         }
       }
+
+      // 执行中西文盘古排版间距美化（对正文节点自动完成中西文/中文数字空格，同时避开代码区）
+      applyDomTypography(contentEl);
 
       // 构建本章要目卡片与右侧索引轴
       buildContentsAndSpine();
@@ -1149,7 +1391,8 @@
           h.id = headingId;
           const li = document.createElement('li');
           const a = document.createElement('a');
-          a.textContent = h.textContent.replace(/^#+\s*/, '');
+          const rawText = h.textContent.replace(/^#+\s*/, '');
+          a.textContent = formatTypographyText(rawText);
           a.href = '#' + headingId;
           a.onclick = (e) => {
             e.preventDefault();
@@ -1171,7 +1414,8 @@
         h2Elements.forEach((h) => {
           const link = document.createElement('a');
           link.className = 'spine-item';
-          link.textContent = h.textContent.replace(/^#+\s*/, '');
+          const rawText = h.textContent.replace(/^#+\s*/, '');
+          link.textContent = formatTypographyText(rawText);
           link.href = '#' + h.id;
           link.onclick = (e) => {
             e.preventDefault();
@@ -1213,7 +1457,7 @@
 
       if (currentDocIndex > 0) {
         prevBtn.style.display = 'flex';
-        document.getElementById('pager-prev-title').textContent = chapters[currentDocIndex - 1].title;
+        document.getElementById('pager-prev-title').textContent = formatTypographyText(chapters[currentDocIndex - 1].title);
         prevBtn.onclick = () => location.hash = chapters[currentDocIndex - 1].id;
       } else {
         prevBtn.style.display = 'none';
@@ -1221,7 +1465,7 @@
 
       if (currentDocIndex < chapters.length - 1) {
         nextBtn.style.display = 'flex';
-        document.getElementById('pager-next-title').textContent = chapters[currentDocIndex + 1].title;
+        document.getElementById('pager-next-title').textContent = formatTypographyText(chapters[currentDocIndex + 1].title);
         nextBtn.onclick = () => location.hash = chapters[currentDocIndex + 1].id;
       } else {
         nextBtn.style.display = 'none';
@@ -1253,6 +1497,23 @@
         }
       });
     }
+
+    // 快捷键监听: Ctrl+K / Cmd+K 聚焦检索框
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      } else if (e.key === 'ArrowLeft' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        if (currentDocIndex > 0) {
+          location.hash = chapters[currentDocIndex - 1].id;
+        }
+      } else if (e.key === 'ArrowRight' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        if (currentDocIndex < chapters.length - 1) {
+          location.hash = chapters[currentDocIndex + 1].id;
+        }
+      }
+    });
 
     searchInput.addEventListener('keydown', (e) => {
       const items = searchPanel.querySelectorAll('.search-item');
@@ -1335,10 +1596,11 @@
       const topResults = results.slice(0, 8);
       currentSearchResults = topResults;
       searchPanel.innerHTML = topResults.map((res, rIdx) => {
-        const highlighted = res.snippet.replace(new RegExp(`(${res.query})`, 'gi'), '<span class="search-match-mark">$1</span>');
+        const rawSnippet = formatTypographyText(res.snippet);
+        const highlighted = rawSnippet.replace(new RegExp(`(${res.query})`, 'gi'), '<span class="search-match-mark">$1</span>');
         return `<div class="search-item" data-index="${rIdx}">
-          <div class="search-item-chapter">${res.chapter}</div>
-          <div class="search-item-title">${res.heading}</div>
+          <div class="search-item-chapter">${formatTypographyText(res.chapter)}</div>
+          <div class="search-item-title">${formatTypographyText(res.heading)}</div>
           <div class="search-item-snippet">${highlighted}</div>
         </div>`;
       }).join('');
