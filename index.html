@@ -1248,10 +1248,6 @@
       </div>`;
     };
 
-    renderer.table = function(header, body) {
-      return `<div class="table-responsive-wrapper"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
-    };
-
     marked.setOptions({
       renderer: renderer,
       gfm: true,
@@ -1339,6 +1335,16 @@
       // 渲染 Markdown
       const rawHtml = marked.parse(markdownText);
       contentEl.innerHTML = transformAlerts(rawHtml);
+
+      // 自适应包装三线表格容器
+      contentEl.querySelectorAll('table').forEach(table => {
+        if (!table.parentElement.classList.contains('table-responsive-wrapper')) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'table-responsive-wrapper';
+          table.parentNode.insertBefore(wrapper, table);
+          wrapper.appendChild(table);
+        }
+      });
 
       // 渲染 Mermaid 矢量图表
       const mermaidNodes = contentEl.querySelectorAll('.mermaid');
