@@ -89,3 +89,11 @@ venv/
 # Node
 node_modules/
 npm-debug.log*
+
+
+# ==========================================
+# Agent Skills Files & Scratch
+# ==========================================
+.agents/
+docs/superpowers/
+.superpowers/
