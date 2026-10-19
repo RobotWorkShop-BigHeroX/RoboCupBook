@@ -1,4 +1,4 @@
-[submodule "Zvalley-resource-old"]
-	path = Zvalley-resource-old
+[submodule "Zvalley-resource"]
+	path = Zvalley-resource
 	url = https://github.com/RobotWorkShop-BigHeroX/robocup-zvalley-resource.git
 	branch = master

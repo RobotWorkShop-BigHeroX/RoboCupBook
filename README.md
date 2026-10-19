@@ -4,7 +4,7 @@
 
 湖南大学 Robot 工作坊 · BigHeroX 战队
 
-[最新发布版本 (v1.1.0)](https://github.com/RobotWorkShop-BigHeroX/RoboCupBook/releases) · [在线阅读站点](https://robotworkshop-bigherox.github.io/RoboCupBook/) · [下载标准 PDF (v1.1.0)](RoboCup_HSL_Handbook_v1.1.0.pdf) · [MIT 开源许可证](LICENSE)
+[最新发布版本 (v1.2.0)](https://github.com/RobotWorkShop-BigHeroX/RoboCupBook/releases) · [在线阅读站点](https://robotworkshop-bigherox.github.io/RoboCupBook/) · [下载标准 PDF (v1.2.0)](RoboCup_HSL_Handbook_v1.2.0.pdf) · [MIT 开源许可证](LICENSE)
 
 ---
 
@@ -23,7 +23,7 @@
 
 ## 📚 手册目录全景导航
 
-手册包含 7 个核心技术章节与 6 个参考附录，正文与标准 PDF（v1.1.0）保持内容同步。
+手册包含 7 个核心技术章节与 6 个参考附录，正文与标准 PDF（v1.2.0）保持内容同步。
 
 | 章节模块 | 核心内容概述 | 在线查阅链接 |
 | :--- | :--- | :---: |
@@ -42,7 +42,7 @@
 
 本项目采用公开与私有分层管理结构：
 - **公开资料（`public-resource/`）**：存放本队公开 TDP 报告、比赛视频与硬件参数表。
-- **私有资料（`Zvalley-resource-old/`）**：以 **Git Submodule** 形式独立接入内部私有仓库 [`RobotWorkShop-BigHeroX/robocup-zvalley-resource`](https://github.com/RobotWorkShop-BigHeroX/robocup-zvalley-resource)，托管 T4 机器人内部硬件手册与未公开技术资产。
+- **私有资料（`Zvalley-resource/`）**：以 **Git Submodule** 形式独立接入内部私有仓库 [`RobotWorkShop-BigHeroX/robocup-zvalley-resource`](https://github.com/RobotWorkShop-BigHeroX/robocup-zvalley-resource)，托管 T4 机器人内部硬件手册与未公开技术资产。
 
 ### 克隆与拉取完整仓库
 若已获得战队内部授权，请在克隆主仓库时加入 `--recurse-submodules` 参数：
@@ -73,7 +73,7 @@ uv run python scripts/build_pdf.py
 # 编译完成后清理中间辅助文件
 uv run python scripts/build_pdf.py --clean
 ```
-编译成功后，将在项目根目录下生成最新版的标准手册：`RoboCup_HSL_Handbook_v1.1.0.pdf`。
+编译成功后，将在项目根目录下生成最新版的标准手册：`RoboCup_HSL_Handbook_v1.2.0.pdf`。
 
 ---
 

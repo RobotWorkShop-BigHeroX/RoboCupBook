@@ -6,200 +6,200 @@
 
 \begin{longtable}{p{2.6cm} p{4.2cm} p{7.4cm}}
 \toprule
-\textbf{中文} & \textbf{英文 / 缩写} & \textbf{解释} \\
+\textbf{中文术语} & \textbf{英文 / 缩写} & \textbf{核心概念定义与解释} \\
 \midrule
 \endfirsthead
 \toprule
-\textbf{中文} & \textbf{英文 / 缩写} & \textbf{解释} \\
+\textbf{中文术语} & \textbf{英文 / 缩写} & \textbf{核心概念定义与解释} \\
 \midrule
 \endhead
 \bottomrule
 \endfoot
-人形足球联赛 & HSL & RoboCup 下属的人形机器人足球联赛，本书的主角 \\
+人形足球联赛 & HSL & RoboCup 下属的人形机器人足球联赛（Humanoid Soccer League），本书核心对象 \\
 \addlinespace
-标准平台组 & SPL & 统一使用 NAO 的历史组别，已并入人形体系 \\
+标准平台组 & SPL & 统一使用 Aldebaran NAO 机器人的历史组别，现已合并融入人形体系 \\
 \addlinespace
-中型组 & MSL & 轮式中型机器人组别，已停办 \\
+中型组 & MSL & 轮式全向底盘中型机器人组别，现已停办 \\
 \addlinespace
-技术文档 & TDP & 各队每年提交的技术说明，含方案与结果 \\
+技术说明文档 & TDP & 各参赛队每年必须提交的技术报告（Team Description Paper），包含系统方案与实验数据 \\
 \addlinespace
-裁判盒 & GC & 广播比赛状态的官方程序，见 1.6 节 \\
+裁判盒 & GC & 官方比赛状态广播控制程序（GameController），用于发布比赛计时与裁判指令 \\
 \addlinespace
-数据分发服务 & DDS & ROS 2 底层的通信标准，无中心节点 \\
+数据分发服务 & DDS & ROS 2 底层基于分布式发布/订阅机制的去中心化通信中间件标准 \\
 \addlinespace
-服务质量 & QoS & 规定消息丢了要不要重传、队列多深 \\
+服务质量 & QoS & 规定消息传输可靠性（RELIABLE / BEST\_EFFORT）、队列缓冲深度与保活机制的策略集 \\
 \addlinespace
-坐标变换 & TF2 & 维护各坐标系之间变换的 ROS 2 组件 \\
+坐标变换 & TF2 & ROS 2 中维护空间中各个参考坐标系之间随时间变化的变换树组件 \\
 \addlinespace
-坐标变换树 & TF tree & 从地图到相机的一串变换关系 \\
+坐标变换树 & TF tree & 从地图坐标系（map）贯穿至机体（base）、传感器（camera）的空间树状拓扑 \\
 \addlinespace
-蒙特卡洛定位 & MCL & 用粒子表示位姿分布的定位方法，见 4.7 节 \\
+蒙特卡洛定位 & MCL & 基于粒子滤波算法，利用粒子群概率分布估计机器人全局空间位姿的方法 \\
 \addlinespace
-粒子 & particle & 一个候选位姿，MCL 的基本单位 \\
+位姿粒子 & particle & MCL 定位中的基础假想状态单元，包含空间位置与航向角 $(x, y, \theta)$ 及对应权重 \\
 \addlinespace
-重采样 & resampling & 按权重复制和淘汰粒子的一步 \\
+重采样 & resampling & 按照粒子权重分布重新抽样，剔除无效粒子并复制高置信度粒子的运算步骤 \\
 \addlinespace
-里程计 & odometry & 靠关节和触地推算的相对位移 \\
+足式里程计 & odometry & 依靠关节编码器角度变化与触地开关状态推算得出的相对位移与速度估计 \\
 \addlinespace
-正运动学 & FK & 已知关节角，算脚在哪 \\
+正运动学 & FK & 在已知各关节旋转角度的前提下，推算末端执行器（如脚掌）相对基坐标系的空间位置 \\
 \addlinespace
-逆运动学 & IK & 已知脚要去哪，算关节角 \\
+逆运动学 & IK & 在已知脚掌期望落点位置的前提下，反向求解下肢各关节所需的转动角度 \\
 \addlinespace
-惯性测量单元 & IMU & 测角速度和加速度的传感器 \\
+惯性测量单元 & IMU & 采集机器人本体三轴角速度与三轴加速度并解算机体动态姿态的惯性传感器 \\
 \addlinespace
-零力矩点 & ZMP & 判定机器人会不会倒的一个点 \\
+零力矩点 & ZMP & 地面反作用力的总合力矩水平分量为零的点，用于判定双足机器人的动态平衡裕度 \\
 \addlinespace
-压力中心 & CoP & 足底受力的等效作用点 \\
+压力中心 & CoP & 足底支撑区域所受地面反作用力垂直分量的等效作用点 \\
 \addlinespace
-有限状态机 & FSM & 状态加跳转条件的控制结构 \\
+有限状态机 & FSM & 包含有限数量离散状态及其流转触发事件的经典控制逻辑结构 \\
 \addlinespace
-行为树 & BT & 用组合节点组织行为的控制结构，见 4.6 节 \\
+行为树 & BT & 由 Fallback、Sequence 与条件/动作节点构成的层次化任务决策控制结构 \\
 \addlinespace
-仿真到真机 & sim2real & 把仿真里训好的策略搬到真机 \\
+仿真到真机 & sim2real & 将在物理仿真引擎中训练得到的控制策略无缝迁移并部署至物理真机平台的过程 \\
 \addlinespace
-域随机化 & domain randomization & 训练时随机改参数，逼策略适应差异 \\
+域随机化 & domain randomization & 在仿真训练阶段人为随机扰动环境摩擦力、机体质量与通信时延，增强控制策略鲁棒性 \\
 \addlinespace
-机器人描述文件 & URDF & 描述连杆、关节、外观的模型文件 \\
+机器人描述文件 & URDF & 基于 XML 格式规范描述机器人连杆质量、惯性张量、外观几何与关节限位的模型文件 \\
 \addlinespace
-推理引擎 & TensorRT / .engine & 把模型编译成显卡能快速跑的格式 \\
+推理加速引擎 & TensorRT / .engine & NVIDIA 针对特定 GPU 硬件架构编译量化的深度学习高性能推理引擎与权重文件格式 \\
 \addlinespace
-漏检 & false negative & 场景中存在目标，但检测系统未能识别该目标 \\
+漏检 & false negative & 视野中客观存在目标物体（如足球），但视觉检测系统未能将其识别输出 \\
 \addlinespace
-误检 & false positive & 场景中不存在目标，但检测系统输出了目标结果 \\
+误检 & false positive & 视野中客观不存在目标物体，但视觉检测系统产生错误识别并输出边界框 \\
 \end{longtable}
 
 \section{新成员 90 天计划}
 
-这份计划按每周约 8 至 10 小时安排，目标是在三个月内让新成员能够独立修改并验证一个小模块。实际进度应根据课程负担和队内任务调整。
+本计划面向刚加入战队的新成员，按每周投入约 8 至 10 小时研发时间设计，目标在三个月内具备独立维护与验证单一功能模块的能力：
 
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{p{1.8cm} p{3.2cm} X}
+\begin{tabularx}{\textwidth}{p{2.2cm} p{5.6cm} X}
 \toprule
-\textbf{周次} & \textbf{做什么} & \textbf{验收标准} \\
+\textbf{学习阶段} & \textbf{重点学习内容} & \textbf{阶段验收标准} \\
 \midrule
-第 1--2 周 & 读第 1、6 章；看一次完整的真机测试 & 能说清比赛状态和三种安全操作 \\
+第 1--2 周 & 精读第 1 章（赛制规则）与第 6 章（安全守则）；参与一次真机全流程测试 & 能够准确说明比赛状态机流转逻辑与三类安全应急停机操作 \\
 \addlinespace
-第 3--4 周 & Git 与 Linux；克隆仓库，本地编译一遍 & 能提一个 PR，能改一个参数 \\
+第 3--4 周 & 学习 Git 协作工作流与常用 Linux 调试命令；克隆代码仓库并在本地完成构建 & 能够独立提交包含规范格式信息的 PR，能够修改配置文件中的指定参数 \\
 \addlinespace
-第 5--6 周 & 第 4.2、4.3 节；跑通 ROS 2 示例 & 能画出队里的话题拓扑 \\
+第 5--6 周 & 学习第 4 章 ROS 2 核心机制；跑通本地 ROS 2 通信示例工程 & 能够绘制出机载软件核心节点的话题拓扑与 QoS 配置关系 \\
 \addlinespace
-第 7--8 周 & 跟着做一次真机联调；学录包和回放 & 能用 rosbag2 复现一个现象 \\
+第 7--8 周 & 跟随高年级队员参与真机联调；掌握 rosbag2 录包与离线回放 & 能够熟练使用 rosbag2 记录异常话题并在离线环境下复现定位故障 \\
 \addlinespace
-第 9--10 周 & 进组：感知读 4.4，策略读 4.5，运控读 3.2 & 能在自己的模块里改一个阈值并解释结果 \\
+第 9--10 周 & 确定研发方向进组（感知组精读 4.5、策略组精读 4.6、运控组精读 3.2） & 能够在所负责模块中独立调整算法参数并解释测试现象产生的物理机制 \\
 \addlinespace
-第 11--12 周 & 独立接一个小任务（比如换个检测类别） & 从改代码到上机验证，全程自己走一遍 \\
+第 11--12 周 & 独立承担小型开发任务（如补充特定视觉类别或增加行为树判断分支） & 完成从代码修改、仿真对比到保护吊架下的真机验证全流程 \\
 \bottomrule
 \end{tabularx}
-\caption{按每周约 8 至 10 小时设计的新成员学习计划。}
+\caption{按每周约 8 至 10 小时设计的新成员阶梯式学习计划。}
 \end{table}
 
 \section{故障排查速查}
 
-\begin{longtable}{p{3.4cm} p{5.2cm} p{5.6cm}}
+\begin{longtable}{p{3.2cm} p{5.0cm} p{6.2cm}}
 \toprule
-\textbf{现象} & \textbf{先查什么} & \textbf{常见原因} \\
+\textbf{异常现象} & \textbf{优先排查点} & \textbf{常见故障根因与物理机制} \\
 \midrule
 \endfirsthead
 \toprule
-\textbf{现象} & \textbf{先查什么} & \textbf{常见原因} \\
+\textbf{异常现象} & \textbf{优先排查点} & \textbf{常见故障根因与物理机制} \\
 \midrule
 \endhead
 \bottomrule
 \endfoot
-机器人完全不动 & 裁判盒状态、急停、阻尼开关 & 状态还在 INITIAL；急停没复位 \\
+机器人完全不动作 & 裁判盒状态、硬件急停按钮、遥控器阻尼开关 & 比赛状态停留在 INITIAL；急停回路未复位；遥控手处于阻尼状态 \\
 \addlinespace
-收不到裁判盒 & 队号、球员号、网段、防火墙 & 编号不一致；广播被拦 \\
+无法接收裁判盒广播 & 机载配置队号、球员编号、局域网网段、系统防火墙 & 队号或球员 ID 配置不一致；广播端口 3838 被系统防火墙规则阻断 \\
 \addlinespace
-定位乱跳 & 特征数量、粒子数、重采样阈值 & 镜像解；特征太少还强行重采样 \\
+场地定位结果跳变 & 视觉标线特征数量、粒子群规模、重采样触发阈值 & 球场对称导致半场认反；视野内标线严重不足时频繁触发无效重采样 \\
 \addlinespace
-检测不到球 & 曝光、阈值、模型输入尺寸 & 过曝；训练集没有这个场地 \\
+视觉检测不到足球 & 相机曝光时间、模型置信度阈值、图像输入分辨率 & 场地光照引起草皮反光过曝；训练数据集未包含当前色温光照条件 \\
 \addlinespace
-画面延迟大 & QoS 配置、队列深度、CPU 占用 & 可靠传输加深度队列 \\
+图像传输延迟过大 & 相机话题 QoS 配置、队列缓冲深度、机载 CPU 占用 & 视觉话题配置为可靠传输且队列深度过大，导致历史图像帧发生积压 \\
 \addlinespace
-步态发散 & IMU 零偏、关节零位、吊绳是否绷紧 & 零偏没减；吊绳拉着走 \\
+双足步态发散失衡 & IMU 零偏扣除、关节机械零位对正、保护吊绳是否牵扯 & 未在上电静止期执行 IMU 零偏校准；保护吊绳过紧拉扯机体质心 \\
 \addlinespace
-关节异响 & 立即断电，手动转关节 & 齿轮损伤；线束干涉 \\
+关节转动出现机械异响 & 立即断电！手动轻转关节检查传动阻力 & 减速器行星齿轮损伤断齿；外部连杆发生形变与走线发生物理干涉 \\
 \addlinespace
-走直线偏 & 左右腿零位差、地面摩擦 & 零位没有对正；一侧打滑 \\
+机器人行走轨迹偏斜 & 左右下肢对称关节机械零位、双侧脚底摩擦系数 & 左右髋关节旋转零位存在角度差；单侧橡胶脚垫磨损严重发生打滑 \\
 \addlinespace
-踢球方向偏 & 髋旋转零位、球的位置估计 & 零位偏差；视觉坐标没转对 \\
+单腿起脚踢球打偏 & 髋部偏航旋转关节零位、球体相对相机坐标解算 & 髋部航向角存在机械偏差；坐标变换未考虑相机到机体的旋转矩阵 \\
 \addlinespace
-编译失败 & 依赖版本、工作空间是否 source & 环境没加载；分支不对 \\
+编译工程时提示报错 & 依赖库版本、环境变量是否加载（\texttt{source} 工作区） & 工作空间 setup.bash 未加载；第三方库版本与系统需求不匹配 \\
 \addlinespace
-上电无反应 & 电池电压、急停回路、保险 & 电池过放；急停没复位 \\
+合上动力电后无响应 & 动力电池端电压、急停回路导通状态、动力保险丝 & 动力电池组严重过放触发保护；急停按钮未旋转弹出；主回路保险丝烧断 \\
 \addlinespace
-通信间歇丢包 & 网线、交换机、无线干扰 & 网线松动；多人抢同一频段 \\
+机载网络间歇性丢包 & RJ45 工业网线水晶头、交换机端口、无线信道干扰 & 网线接头松动氧化；现场存在大量同频 Wi-Fi 信号造成严重信道拥堵 \\
 \end{longtable}
 
 \section{待补事实清单}
 
-本节汇总正文中标记为 \todo{待补} 的信息。补齐并核对后，可删除本节。
+本清单梳理各章节中标记待队内进一步测量或核验确认的硬件与平台信息：
 
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{p{3.6cm} p{6.4cm} X}
+\begin{tabularx}{\textwidth}{p{3.8cm} p{6.0cm} X}
 \toprule
-\textbf{条目} & \textbf{去哪拿} & \textbf{谁负责} \\
+\textbf{待核实条目} & \textbf{建议获取途径} & \textbf{负责人员} \\
 \midrule
-T4 整机尺寸与重量 & 厂家手册 / 自己量 & \\
+T4 机器人整机精确尺寸与全备重量 & 查阅厂家说明书或在工位使用精密量具实测 & 机械组负责人 \\
 \addlinespace
-关节限位表 & SDK 文档 + 实测 & \\
+各关节极限活动角度与软限位参数表 & 查阅 SDK 固件文档并进行物理极限角度标定 & 运控组负责人 \\
 \addlinespace
-电池续航与更换策略 & 实测记录 & \\
+各工况续航曲线与比赛换电规程 & 开展满电到低压报警的持续行走压力测试 & 电气组负责人 \\
 \addlinespace
-队史与历年名次 & 队内档案 & \\
+战队历史参赛记录与历届赛事成绩档案 & 整理战队内部档案库与历年获奖公文 & 领队与交接人员 \\
 \addlinespace
-网站平台功能清单 & 平台负责人 & \\
+中联重科 Z01 平台配套接口清单 & 结合官方开放资料总站更新情况核实更新 & 仿真组负责人 \\
 \addlinespace
-规则条款编号 & Rules.tex 对应小节 & \\
+当季最新 Rules 条款对应小节索引 & 对照 HSL-Rules 官方仓库最新发布的 Rules.pdf & 规则跟进人员 \\
 \addlinespace
-各队近年战绩 & 官方 qualified-teams & \\
+全球主要竞争对手当届 TDP 关键改动 & 汇总分析官方 qualified-teams 页面公布的新材料 & 感知与策略组 \\
 \bottomrule
 \end{tabularx}
-\caption{需要由队内负责人补齐并定期核验的信息。}
+\caption{需要由队内负责人补齐并定期核验的信息清单。}
 \end{table}
 
 \clearpage
-\section{队内黑话对照}
+\section{队内常用表达对照}
 
-下表列出队内常用说法及其含义，便于新成员阅读文档和参与讨论。
+下表梳理战队日常研发中约定俗成的常用技术表达，便于新成员快速融入讨论：
 
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{p{2.8cm} X}
+\begin{tabularx}{\textwidth}{p{2.6cm} X}
 \toprule
-\textbf{说法} & \textbf{意思} \\
+\textbf{常用术语} & \textbf{具体工程含义} \\
 \midrule
-上机 / 上真机 & 在实体机器人上运行；仿真环境里不算 \\
+上机 / 上真机 & 将编写的算法与控制策略部署至真实物理机器人硬件上运行（仿真环境运行不算） \\
 \addlinespace
-跑包 & 用 rosbag2 回放录好的数据 \\
+跑包 & 使用 ROS 2 的 rosbag2 工具回放此前实地录制的话题数据，进行算法离线验证 \\
 \addlinespace
-挂机 & 机器人吊在吊机上，准备测试 \\
+挂机 & 将机器人使用吊索安全悬挂在保护吊架下方，处于就绪但脚掌微悬空的受保护状态 \\
 \addlinespace
-进阻尼 & 切到阻尼模式，关节失去主动力（见第 6 章） \\
+进阻尼 & 触发控制程序将伺服电机切换至阻尼模式，关闭主动驱动力，保留阻尼缓冲（参见第 6 章） \\
 \addlinespace
-翻车 & 机器人摔倒，或者整套流程失效 \\
+翻车 & 机器人失去动平衡发生摔倒，或算法出现异常退出导致整套流程中断 \\
 \addlinespace
-对零位 & 把关节摆到标定零位 \\
+对零位 & 通过机械标定工装与标定软件，将所有关节伺服电机的机械零位与编码器零位校准一致 \\
 \addlinespace
-标场地 & 在真实场地上重新调相机参数 \\
+标场地 & 根据比赛现场特定的人工草皮颜色与场馆照明条件，现场重新微调相机的曝光与色彩阈值 \\
 \addlinespace
-踢空 & 检测到球但位置算错，出脚落空 \\
+踢空 & 视觉系统检测到了球体但空间坐标解算偏差较大，导致机器人摆腿踢球未能命中目标 \\
 \addlinespace
-追不上 & 决策给了目标速度，底层的实际速度跟不上 \\
+追不上 & 上层决策系统输出了期望运动速度，但受限于底层步态加速度与防倾倒约束，物理机体无法跟上期望值 \\
 \addlinespace
-掉包 & 话题或裁判盒数据丢了 \\
+掉包 & 局域网网络通信拥堵或中间件配置不当，导致关键话题消息或裁判盒广播数据发生丢失 \\
 \addlinespace
-烧板子 & 驱动板损坏，通常伴随焦味 \\
+烧板子 & 电机伺服驱动板或电源管理板因带电插拔、短路、过压浪涌或长时间堵转而损毁 \\
 \addlinespace
-过检录 & 尺寸、重量、传感器全部合规 \\
+过检录 & 机器人的几何尺寸、全备重量、传感器合规性与电气安全指标全部通过技术委员会的严格审查 \\
 \bottomrule
 \end{tabularx}
-\caption{队内常见术语与口头表达。}
+\caption{队内技术交流常用术语与工程含义。}
 \end{table}
 
 \section{延伸阅读}
@@ -207,31 +207,34 @@ T4 整机尺寸与重量 & 厂家手册 / 自己量 & \\
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{\textwidth}{p{3.4cm} X}
+\begin{tabularx}{\textwidth}{p{3.6cm} X}
 \toprule
-\textbf{资源} & \textbf{读它解决什么问题} \\
+\textbf{参考资料名称} & \textbf{推荐查阅方向与解决的问题} \\
 \midrule
-Google 开发者文档风格指南 & 关于清晰表达、准确用词和避免过度断言的写作建议 \\
+Google 开发者文档风格指南 & 学习关于技术文档清晰表达、精准动词使用与避免过度断言的专业写作建议 \\
 \addlinespace
-ROS 2 官方文档 & 概念定义清楚，优先读 Concepts 部分 \\
+ROS 2 官方文档 & 深入理解 ROS 2 通信模型、QoS 策略细节、Node Composition 与 Lifecycle 机制 \\
 \addlinespace
-B-Human Code Release 文档 & 一套完整机器人系统的架构说明，见第 2 章 \\
+B-Human Code Release 技术文档 & 学习成熟队伍的代码组织方式、视觉检测和滤波算法的工程实现细节 \\
 \addlinespace
-HSL-Rules 仓库 & 规则原文与修订历史。有歧义时以它为准 \\
+HSL-Rules 官方规则仓库 & 查阅当届赛事规则文本与历史修订记录，作为判定比赛机制合规性的根本依据 \\
 \addlinespace
-BehaviorTree.CPP 文档 & 行为树的工程实现，含可视化工具 \\
+BehaviorTree.CPP 官方技术文档 & 掌握行为树的核心控制逻辑、黑板机制、XML 语法与 Groot 可视化调试工具 \\
 \addlinespace
-Ultralytics YOLO 文档 & 训练、导出、部署的完整流程 \\
+Ultralytics YOLO 官方文档 & 掌握目标检测模型的样本准备、数据增强、模型微调与 TensorRT 部署规范 \\
 \addlinespace
-Linux Journey & 命令行入门，做到「文件、进程、权限」三章即可 \\
+Linux Journey 教学平台 & 系统掌握 Linux 命令行操作、文件系统权限管理、系统进程与网络排查技能 \\
 \bottomrule
 \end{tabularx}
-\caption{可用于继续学习的官方文档、项目资料和工具说明。}
+\caption{可用于拓展深入的官方文档与工程资料。}
 \end{table}
+
 \vspace{0.6cm}
 \begin{center}
 \rule{0.6\textwidth}{0.5pt}\\[0.3cm]
 {\small \textsf{Robot 工作坊 \(\cdot\) BigHeroX 战队研发委员会 编制}}\\[0.1cm]
-{\footnotesize \textsf{本书对应 2026 赛季 \(\cdot\) 规则以 HSL-Rules 仓库为准}}\\[0.1cm]
+{\footnotesize \textsf{本书对应 2026 赛季 \(\cdot\) 规则以 HSL-Rules 官方发布为准}}\\[0.1cm]
 {\footnotesize \textsf{All Rights Reserved \(\copyright\) 2026}}
 \end{center}
+
+\newpage

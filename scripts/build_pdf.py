@@ -44,7 +44,7 @@ def build_pdf(clean: bool = False):
     root_dir = Path(__file__).resolve().parent.parent
     latex_dir = root_dir / "latex"
     main_tex = latex_dir / "main-v1.2.tex"
-    output_pdf = root_dir / "RoboCup_HSL_Handbook_v1.1.0.pdf"
+    output_pdf = root_dir / "RoboCup_HSL_Handbook_v1.2.0.pdf"
 
     if not main_tex.exists():
         print(f"[-] 错误: 未找到主排版文件 {main_tex}", file=sys.stderr)
