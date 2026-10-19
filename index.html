@@ -7,6 +7,11 @@
   <meta name="description" content="面向 RoboCup 及人形机器人足球联赛 (HSL) 零基础新成员的权威入门指引与知识工程体系 - 湖南大学 Robot 工作坊 BigHeroX 战队">
   <link rel="icon" type="image/jpeg" href="public-resource/ima/BigHeroX.jpg">
 
+  <!-- 浏览器缓存控制策略：确保文档与脚本始终加载最新状态 -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <!-- 字体资源: Plus Jakarta Sans (西文标题) + Fira Code (代码) + Noto Sans SC (中文屏显正文) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +19,7 @@
   
   <!-- 核心库: 代码高亮、Markdown 解析、Mermaid 矢量图表渲染、中西文排版 pangu.js -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="vendor/marked.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
   <script src="vendor/pangu.umd.js"></script>
@@ -1307,7 +1312,7 @@
       let markdownText = docCache[target.doc];
       if (!markdownText) {
         try {
-          const resp = await fetch(target.doc);
+          const resp = await fetch(target.doc + '?t=' + Date.now());
           if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
           markdownText = await resp.text();
           docCache[target.doc] = markdownText;
@@ -1486,7 +1491,7 @@
       for (const ch of chapters) {
         if (!docCache[ch.doc]) {
           try {
-            const resp = await fetch(ch.doc);
+            const resp = await fetch(ch.doc + '?t=' + Date.now());
             if (resp.ok) {
               docCache[ch.doc] = await resp.text();
             }
