@@ -1296,6 +1296,67 @@
       }
     }
 
+    // 智能解析各类正文链接并映射到本专著章节路由
+    function resolveChapterByHref(rawHref) {
+      if (!rawHref) return null;
+      let cleanHref = rawHref.trim();
+
+      // 去除同源或 GitHub Pages 域名与基础路径前缀
+      const prefixes = [
+        window.location.origin + '/RoboCupBook/',
+        window.location.origin + '/',
+        'https://robotworkshop-bigherox.github.io/RoboCupBook/',
+        'https://robotworkshop-bigherox.github.io/'
+      ];
+      for (const prefix of prefixes) {
+        if (cleanHref.startsWith(prefix)) {
+          cleanHref = cleanHref.slice(prefix.length);
+          break;
+        }
+      }
+
+      // 提取可能的锚点
+      let anchor = '';
+      const hashIdx = cleanHref.indexOf('#');
+      if (hashIdx !== -1) {
+        anchor = cleanHref.slice(hashIdx + 1);
+        cleanHref = cleanHref.slice(0, hashIdx);
+        try {
+          anchor = decodeURIComponent(anchor);
+        } catch (e) {}
+      }
+
+      // 如果原本就是纯哈希链接（例如 #01-robocup 或 #section-1）
+      if (!cleanHref && anchor) {
+        const matchingChapter = chapters.find(c => c.id.toLowerCase() === anchor.toLowerCase());
+        if (matchingChapter) {
+          return { id: matchingChapter.id, anchor: '' };
+        }
+        return null;
+      }
+
+      // 如果是外部网络链接，不作为章节处理
+      if (/^(?:https?:)?\/\//i.test(cleanHref) || cleanHref.startsWith('mailto:')) {
+        return null;
+      }
+
+      // 去除相对路径前缀与 docs/ 目录
+      const normalizedPath = cleanHref.replace(/^[./\\]+/, '').replace(/^docs[/\\]/i, '');
+      if (normalizedPath.toLowerCase().endsWith('.md')) {
+        const fileStem = normalizedPath.slice(0, -3).toLowerCase();
+        const targetChapter = chapters.find(c => {
+          const docStem = c.doc.replace(/^[./\\]+/, '').replace(/^docs[/\\]/i, '').replace(/\.md$/i, '').toLowerCase();
+          return c.id.toLowerCase() === fileStem || docStem === fileStem;
+        });
+
+        if (targetChapter) {
+          return { id: targetChapter.id, anchor: anchor };
+        }
+      }
+
+      return null;
+    }
+
     // 加载文档内容
     async function loadDoc(index) {
       currentDocIndex = index;
@@ -1340,6 +1401,25 @@
       // 渲染 Markdown
       const rawHtml = marked.parse(markdownText);
       contentEl.innerHTML = transformAlerts(rawHtml);
+
+      // 处理正文内部链接与外链属性：将 Markdown 文档跳转转为 SPA 哈希路由，外链与 PDF 自动使用新标签页打开
+      contentEl.querySelectorAll('a').forEach(a => {
+        const href = a.getAttribute('href');
+        if (!href) return;
+
+        const targetChapter = resolveChapterByHref(href);
+        if (targetChapter) {
+          const targetHash = '#' + targetChapter.id + (targetChapter.anchor ? '#' + targetChapter.anchor : '');
+          a.setAttribute('href', targetHash);
+          a.setAttribute('data-target-chapter', targetChapter.id);
+          if (targetChapter.anchor) {
+            a.setAttribute('data-target-anchor', targetChapter.anchor);
+          }
+        } else if (/^(?:https?:)?\/\//i.test(href) || href.startsWith('mailto:') || href.toLowerCase().endsWith('.pdf')) {
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+        }
+      });
 
       // 自适应包装三线表格容器
       contentEl.querySelectorAll('table').forEach(table => {
@@ -1646,10 +1726,46 @@
       }
     });
 
+    // 监听正文内容区域的超链接点击，保证无缝平滑切换章节与定位
+    document.getElementById('article-content').addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href) return;
+
+      const targetChapter = resolveChapterByHref(href);
+      if (targetChapter) {
+        e.preventDefault();
+        if (targetChapter.anchor) {
+          pendingHeadingTarget = targetChapter.anchor;
+        }
+        if (location.hash === '#' + targetChapter.id) {
+          if (targetChapter.anchor) {
+            scrollToTargetHeading(targetChapter.anchor);
+            pendingHeadingTarget = null;
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        } else {
+          location.hash = targetChapter.id;
+        }
+      }
+    });
+
     // 路由监听
     function handleRoute() {
-      const hash = location.hash.replace('#', '') || 'readme';
-      const idx = chapters.findIndex(c => c.id === hash);
+      const rawHash = location.hash.replace(/^#+/, '') || 'readme';
+      const parts = rawHash.split('#');
+      const chapterId = parts[0];
+      const subAnchor = parts[1];
+      if (subAnchor && !pendingHeadingTarget) {
+        try {
+          pendingHeadingTarget = decodeURIComponent(subAnchor);
+        } catch (e) {
+          pendingHeadingTarget = subAnchor;
+        }
+      }
+      const idx = chapters.findIndex(c => c.id === chapterId);
       if (idx !== -1) {
         loadDoc(idx);
       } else {
